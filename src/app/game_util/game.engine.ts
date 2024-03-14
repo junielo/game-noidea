@@ -1,5 +1,6 @@
 import { ElementRef } from "@angular/core";
 import { GameFactory } from "./game.factory";
+import { Camera } from "../game_object/camera";
 
 export abstract class GameEngine {
 
@@ -38,6 +39,22 @@ export abstract class GameEngine {
 
         // Scale the drawing context
         this.drawShape.scale(dpr, dpr);
+
+        const max = Math.max(canvas.clientWidth, canvas.clientHeight);
+        const min = Math.min(canvas.clientWidth, canvas.clientHeight);
+
+        if(canvas.clientWidth > canvas.clientHeight) {
+            const ratio = max / min;
+            const newWidth = ((Camera.bounds.getWidth() * ratio) - Camera.bounds.getWidth()) / 2;
+            Camera.bounds.getBounds().left -= newWidth;
+            Camera.bounds.getBounds().right += newWidth;
+        }
+        else if (canvas.clientWidth < canvas.clientHeight) {
+            const ratio = max / min;
+            const newHeight = ((Camera.bounds.getHeight() * ratio) - Camera.bounds.getHeight()) / 2;
+            Camera.bounds.getBounds().top -= newHeight;
+            Camera.bounds.getBounds().bottom += newHeight;
+        }
     }
 
 }

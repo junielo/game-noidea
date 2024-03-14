@@ -16,6 +16,7 @@ export class AppComponent extends GameEngine implements AfterViewInit {
 
   mainPlayer: IGameObject | null = null;
   keyPress: string = '';
+  keyDownCnt: number = 0;
   walkSpeed: number = 1;
 
   ngAfterViewInit(): void {
@@ -29,7 +30,6 @@ export class AppComponent extends GameEngine implements AfterViewInit {
   }
 
   override animate(canvas: CanvasRenderingContext2D): void {
-
     if (this.keyPress === 'w') {
       this.mainPlayer?.moveUp(this.walkSpeed);
     } else if (this.keyPress === 's') {
@@ -39,19 +39,21 @@ export class AppComponent extends GameEngine implements AfterViewInit {
     } else if (this.keyPress === 'd') {
       this.mainPlayer?.moveRight(this.walkSpeed);
     }
-
   }
 
   @HostListener('document:keydown', ['$event'])
   handleKeydownEvent(event: KeyboardEvent) {
     // Handle the key press event here
+    if(event.key !== this.keyPress)
+      this.keyDownCnt++;
     this.keyPress = event.key;
   }
 
   @HostListener('document:keyup', ['$event'])
   handleKeyupEvent(event: KeyboardEvent) {
     // Handle the key press event here
-    this.keyPress = ''
+    this.keyDownCnt--;
+    if (this.keyDownCnt === 0) this.keyPress = ''
   }
 
   setupScene() {
