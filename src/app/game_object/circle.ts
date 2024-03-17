@@ -35,24 +35,28 @@ export class Circle implements IGameObject{
     }
 
     moveLeft(steps: number): void {
+        console.log('Moving left');
         this.centerPoint.x -= steps;
         this.radiusPoint.x -= steps;
         this.children?.forEach(child => child.moveLeft(steps));
     }
 
     moveRight(steps: number): void {
+        console.log('Moving right');
         this.centerPoint.x += steps;
         this.radiusPoint.x += steps;
         this.children?.forEach(child => child.moveRight(steps));
     }
 
     moveUp(steps: number): void {
+        console.log('Moving up');
         this.centerPoint.y -= steps;
         this.radiusPoint.y -= steps;
         this.children?.forEach(child => child.moveUp(steps));
     }
 
     moveDown(steps: number): void {
+        console.log('Moving down');
         this.centerPoint.y += steps;
         this.radiusPoint.y += steps;
         this.children?.forEach(child => child.moveDown(steps));

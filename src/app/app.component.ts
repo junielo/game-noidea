@@ -44,16 +44,13 @@ export class AppComponent extends GameEngine implements AfterViewInit {
   @HostListener('document:keydown', ['$event'])
   handleKeydownEvent(event: KeyboardEvent) {
     // Handle the key press event here
-    if(event.key !== this.keyPress)
-      this.keyDownCnt++;
     this.keyPress = event.key;
   }
 
   @HostListener('document:keyup', ['$event'])
   handleKeyupEvent(event: KeyboardEvent) {
     // Handle the key press event here
-    this.keyDownCnt--;
-    if (this.keyDownCnt === 0) this.keyPress = ''
+    if (this.keyPress === event.key) this.keyPress = ''
   }
 
   setupScene() {

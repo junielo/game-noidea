@@ -40,20 +40,23 @@ export abstract class GameEngine {
         // Scale the drawing context
         this.drawShape.scale(dpr, dpr);
 
-        const max = Math.max(canvas.clientWidth, canvas.clientHeight);
-        const min = Math.min(canvas.clientWidth, canvas.clientHeight);
+        const windowWidth = canvas.clientWidth;
+        const windowHeight = canvas.clientHeight;
 
-        if(canvas.clientWidth > canvas.clientHeight) {
-            const ratio = max / min;
-            const newWidth = ((Camera.bounds.getWidth() * ratio) - Camera.bounds.getWidth()) / 2;
-            Camera.bounds.getBounds().left -= newWidth;
-            Camera.bounds.getBounds().right += newWidth;
+        Camera.resetBounds();
+        if(windowWidth > windowHeight) {
+            const ratio = windowWidth / windowHeight;
+            const newWidth = ((Camera.defaultBounds.getWidth() * ratio) - Camera.defaultBounds.getWidth()) / 2;
+            Camera.bounds.getBounds().left = Camera.defaultBounds.getBounds().left - newWidth;
+            Camera.bounds.getBounds().right = Camera.defaultBounds.getBounds().right + newWidth;
+            
         }
-        else if (canvas.clientWidth < canvas.clientHeight) {
-            const ratio = max / min;
-            const newHeight = ((Camera.bounds.getHeight() * ratio) - Camera.bounds.getHeight()) / 2;
-            Camera.bounds.getBounds().top -= newHeight;
-            Camera.bounds.getBounds().bottom += newHeight;
+        else if (windowWidth < windowHeight) {
+            const ratio = windowHeight / windowWidth;
+            const newHeight = ((Camera.defaultBounds.getHeight() * ratio) - Camera.defaultBounds.getHeight()) / 2;
+            Camera.bounds.getBounds().top = Camera.defaultBounds.getBounds().top - newHeight;
+            Camera.bounds.getBounds().bottom = Camera.defaultBounds.getBounds().bottom + newHeight;
+            
         }
     }
 

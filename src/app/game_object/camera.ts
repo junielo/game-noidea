@@ -4,6 +4,7 @@ import { IGameObject } from "../dimensions/game-object";
 export class Camera implements IGameObject {
 
     static bounds: Boundary;
+    static defaultBounds: Boundary;
     tag: string = "camera";
     parent: IGameObject | null;
     children: IGameObject[] | null;
@@ -11,8 +12,16 @@ export class Camera implements IGameObject {
 
     constructor(bounds: IBounds) {
         Camera.bounds = new Boundary(bounds);
+        Camera.defaultBounds = new Boundary({...bounds});
         this.parent = null;
         this.children = [];
+    }
+
+    static resetBounds() {
+        Camera.bounds.getBounds().left = Camera.bounds.getCenter().x - Camera.defaultBounds.getWidth() / 2;
+        Camera.bounds.getBounds().right = Camera.bounds.getCenter().x + Camera.defaultBounds.getWidth() / 2;
+        Camera.bounds.getBounds().top = Camera.bounds.getCenter().y - Camera.defaultBounds.getHeight() / 2;
+        Camera.bounds.getBounds().bottom =  Camera.bounds.getCenter().y + Camera.defaultBounds.getHeight() / 2;
     }
 
     setBGColor(color: string): void {
