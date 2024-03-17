@@ -1,4 +1,7 @@
+import { IPoint } from "./point";
+
 export interface IGameObject {
+    anchorPoint: IPoint;
     tag: string;
     parent: IGameObject | null;
     children: IGameObject[] | null;
@@ -9,4 +12,5 @@ export interface IGameObject {
     moveRight(steps: number): void;
     moveUp(steps: number): void;
     moveDown(steps: number): void;
+    moveAnchor(point: IPoint): void;
 }

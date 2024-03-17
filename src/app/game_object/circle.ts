@@ -8,12 +8,14 @@ export class Circle implements IGameObject{
     children: IGameObject[] | null;
     bgColor: string = 'red'
 
-    centerPoint: IPoint;
+    anchorPoint: IPoint;
     radiusPoint: IPoint;
+    radius: number;
 
     constructor(tag: string, centerPoint: IPoint, radius: number) {
-        this.centerPoint = centerPoint;
+        this.anchorPoint = centerPoint;
         this.radiusPoint = { x: centerPoint.x + radius, y: centerPoint.y };
+        this.radius = radius;
 
         this.tag = tag;
         this.parent = null;
@@ -25,7 +27,7 @@ export class Circle implements IGameObject{
     }
 
     draw(canvas: CanvasRenderingContext2D): void {
-        const newCenter = worldToPixelCoordinate(canvas, this.centerPoint);
+        const newCenter = worldToPixelCoordinate(canvas, this.anchorPoint);
         const newRadius = worldToPixelCoordinate(canvas, this.radiusPoint);
         canvas.beginPath();
         const rad = newRadius.x - newCenter.x;
@@ -35,31 +37,32 @@ export class Circle implements IGameObject{
     }
 
     moveLeft(steps: number): void {
-        console.log('Moving left');
-        this.centerPoint.x -= steps;
+        this.anchorPoint.x -= steps;
         this.radiusPoint.x -= steps;
         this.children?.forEach(child => child.moveLeft(steps));
     }
 
     moveRight(steps: number): void {
-        console.log('Moving right');
-        this.centerPoint.x += steps;
+        this.anchorPoint.x += steps;
         this.radiusPoint.x += steps;
         this.children?.forEach(child => child.moveRight(steps));
     }
 
     moveUp(steps: number): void {
-        console.log('Moving up');
-        this.centerPoint.y -= steps;
+        this.anchorPoint.y -= steps;
         this.radiusPoint.y -= steps;
         this.children?.forEach(child => child.moveUp(steps));
     }
 
     moveDown(steps: number): void {
-        console.log('Moving down');
-        this.centerPoint.y += steps;
+        this.anchorPoint.y += steps;
         this.radiusPoint.y += steps;
         this.children?.forEach(child => child.moveDown(steps));
+    }
+
+    moveAnchor(point: IPoint): void {
+        this.anchorPoint = { ...point };
+        this.radiusPoint = { x: point.x + this.radius, y: point.y };
     }
 
 }

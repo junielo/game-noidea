@@ -1,27 +1,41 @@
 import { Boundary, IBounds } from "../dimensions/boundary";
 import { IGameObject } from "../dimensions/game-object";
+import { IPoint } from "../dimensions/point";
 
 export class Camera implements IGameObject {
 
+    anchorPoint: IPoint;
     static bounds: Boundary;
-    static defaultBounds: Boundary;
+    // static defaultBounds: Boundary;
+    cameraWidth: number = 100;
+    cameraHeight: number = 100;
+    defaultWidth: number = 100;
+    defaultHeight: number = 100;
     tag: string = "camera";
     parent: IGameObject | null;
     children: IGameObject[] | null;
     bgColor: string = 'red'
 
-    constructor(bounds: IBounds) {
-        Camera.bounds = new Boundary(bounds);
-        Camera.defaultBounds = new Boundary({...bounds});
+    constructor(point: IPoint) {
+        this.anchorPoint = { ...point };
+        Camera.bounds = new Boundary({
+            top: this.anchorPoint.y - this.defaultHeight / 2,
+            bottom: this.anchorPoint.y + this.defaultHeight / 2,
+            left: this.anchorPoint.x - this.defaultWidth / 2,
+            right: this.anchorPoint.x + this.defaultWidth / 2
+        });
         this.parent = null;
         this.children = [];
     }
 
-    static resetBounds() {
-        Camera.bounds.getBounds().left = Camera.bounds.getCenter().x - Camera.defaultBounds.getWidth() / 2;
-        Camera.bounds.getBounds().right = Camera.bounds.getCenter().x + Camera.defaultBounds.getWidth() / 2;
-        Camera.bounds.getBounds().top = Camera.bounds.getCenter().y - Camera.defaultBounds.getHeight() / 2;
-        Camera.bounds.getBounds().bottom =  Camera.bounds.getCenter().y + Camera.defaultBounds.getHeight() / 2;
+    resetBounds() {
+        this.setWidth(this.defaultWidth);
+        this.setHeight(this.defaultHeight);
+    }
+
+    setBounds() {
+        this.setWidth(this.cameraWidth);
+        this.setHeight(this.cameraHeight);
     }
 
     setBGColor(color: string): void {
@@ -32,28 +46,45 @@ export class Camera implements IGameObject {
         // No need to draw the camera
     }
 
+    setWidth(width: number): void {
+        this.cameraWidth = width;
+        Camera.bounds.getBounds().left = this.anchorPoint.x - width / 2;
+        Camera.bounds.getBounds().right = this.anchorPoint.x + width / 2;
+    }
+
+    setHeight(height: number): void {
+        this.cameraHeight = height;
+        Camera.bounds.getBounds().top = this.anchorPoint.y - height / 2;
+        Camera.bounds.getBounds().bottom =  this.anchorPoint.y + height / 2;
+    }
+
     moveLeft(steps: number): void {
-        Camera.bounds.getBounds().left -= steps;
-        Camera.bounds.getBounds().right -= steps;
-        this.children?.forEach(child => child.moveLeft(steps));
+        this.anchorPoint.x -= steps;
+        this.setBounds();
+        this.children?.forEach(child => child.moveAnchor(this.anchorPoint));
     }
 
     moveRight(steps: number): void {
-        Camera.bounds.getBounds().right += steps;
-        Camera.bounds.getBounds().left += steps;
-        this.children?.forEach(child => child.moveRight(steps));
+        this.anchorPoint.x += steps;
+        this.setBounds();
+        this.children?.forEach(child => child.moveAnchor(this.anchorPoint));
     }
 
     moveUp(steps: number): void {
-        Camera.bounds.getBounds().top -= steps;
-        Camera.bounds.getBounds().bottom -= steps;
-        this.children?.forEach(child => child.moveUp(steps));
+        this.anchorPoint.y -= steps;
+        this.setBounds();
+        this.children?.forEach(child => child.moveAnchor(this.anchorPoint));
     }
 
     moveDown(steps: number): void {
-        Camera.bounds.getBounds().bottom += steps;
-        Camera.bounds.getBounds().top += steps;
-        this.children?.forEach(child => child.moveDown(steps));
+        this.anchorPoint.y += steps;
+        this.setBounds();
+        this.children?.forEach(child => child.moveAnchor(this.anchorPoint));
+    }
+
+    moveAnchor(point: IPoint): void {
+        this.anchorPoint = { ...point };
+        this.setBounds();
     }
 
 }

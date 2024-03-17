@@ -5,7 +5,7 @@ import { Circle } from "../game_object/circle";
 
 export class GameFactory {
 
-    camera: Camera = new Camera({ top: -150, bottom: 150, left: -150, right: 150 });
+    camera: Camera = new Camera({ x: 0, y: 0 });
     gameObjects: IGameObject[] = [];
 
     createCircle(tag: string, centerPoint: IPoint, radius: number): IGameObject {

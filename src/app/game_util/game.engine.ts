@@ -8,6 +8,7 @@ export abstract class GameEngine {
     private canvas!: ElementRef<HTMLCanvasElement>
 
     protected gameFactory: GameFactory = new GameFactory();
+    private camera: Camera = this.gameFactory.camera;
 
     protected setCanvasRef(canvas: ElementRef<HTMLCanvasElement>): void {
         this.canvas = canvas;
@@ -43,19 +44,17 @@ export abstract class GameEngine {
         const windowWidth = canvas.clientWidth;
         const windowHeight = canvas.clientHeight;
 
-        Camera.resetBounds();
+        this.camera.resetBounds();
         if(windowWidth > windowHeight) {
             const ratio = windowWidth / windowHeight;
-            const newWidth = ((Camera.defaultBounds.getWidth() * ratio) - Camera.defaultBounds.getWidth()) / 2;
-            Camera.bounds.getBounds().left = Camera.defaultBounds.getBounds().left - newWidth;
-            Camera.bounds.getBounds().right = Camera.defaultBounds.getBounds().right + newWidth;
+            const newWidth = ((this.camera.defaultWidth * ratio));
+            this.camera.setWidth(newWidth);
             
         }
         else if (windowWidth < windowHeight) {
             const ratio = windowHeight / windowWidth;
-            const newHeight = ((Camera.defaultBounds.getHeight() * ratio) - Camera.defaultBounds.getHeight()) / 2;
-            Camera.bounds.getBounds().top = Camera.defaultBounds.getBounds().top - newHeight;
-            Camera.bounds.getBounds().bottom = Camera.defaultBounds.getBounds().bottom + newHeight;
+            const newHeight = ((this.camera.defaultHeight * ratio));
+            this.camera.setHeight(newHeight);
             
         }
     }
