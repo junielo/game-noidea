@@ -1,0 +1,30 @@
+{
+    "files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/CVS": true,
+        "**/.DS_Store": true,
+        "**/Thumbs.db": true,
+        "tsconfig.spec.json": true,
+        "tsconfig.json": true,
+        "tsconfig.app.json": true,
+        "README.md": true,
+        "package-lock.json": true,
+        "angular.json": true,
+        ".editorconfig": true,
+        "src/styles.scss": true,
+        "src/main.ts": true,
+        "src/index.html": true,
+        "src/favicon.ico": true,
+        "node_modules": true,
+        "src\\app/app.routes.ts": true,
+        "src\\app/app.config.ts": true,
+        "src\\app/app.component.spec.ts": true,
+        "src\\app/app.component.scss": true,
+        ".angular": true,
+        "src\\app/app.component.html": true,
+        ".gitignore": true
+    },
+    "explorerExclude.backup": {}
+}

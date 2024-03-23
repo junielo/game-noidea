@@ -2,6 +2,9 @@ import { AfterViewInit, Component, ElementRef, HostListener, ViewChild } from '@
 import { RouterOutlet } from '@angular/router';
 import { GameEngine } from './game_util/game.engine';
 import { IGameObject } from './dimensions/game-object';
+import { CircleMovements } from './animation_controller/circle-movements';
+import { Circle } from './game_object/circle';
+import { CopyPositionConstraint } from './constraints/copy-position';
 
 @Component({
   selector: 'app-root',
@@ -29,34 +32,22 @@ export class AppComponent extends GameEngine implements AfterViewInit {
     this.scaleCanvas();
   }
 
-  override animate(canvas: CanvasRenderingContext2D): void {
-    if (this.keyPress === 'w') {
-      this.mainPlayer?.moveUp(this.walkSpeed);
-    } else if (this.keyPress === 's') {
-      this.mainPlayer?.moveDown(this.walkSpeed);
-    } else if (this.keyPress === 'a') {
-      this.mainPlayer?.moveLeft(this.walkSpeed);
-    } else if (this.keyPress === 'd') {
-      this.mainPlayer?.moveRight(this.walkSpeed);
-    }
-  }
-
   @HostListener('document:keydown', ['$event'])
   handleKeydownEvent(event: KeyboardEvent) {
-    // Handle the key press event here
-    this.keyPress = event.key;
+    this.onKeydown(event);
   }
 
   @HostListener('document:keyup', ['$event'])
   handleKeyupEvent(event: KeyboardEvent) {
-    // Handle the key press event here
-    if (this.keyPress === event.key) this.keyPress = ''
+    this.onKeyup(event);
   }
 
   setupScene() {
     this.mainPlayer = this.gameFactory.createCircle("Player", { x: 0, y: 0 }, 2.1)
+    this.gameFactory.addAnimControls(new CircleMovements(this.mainPlayer as Circle));
     this.mainPlayer.setBGColor('blue');
-    this.mainPlayer.children?.push(this.gameFactory.camera);
+
+    this.gameFactory.addAnimControls(new CopyPositionConstraint(this.mainPlayer, this.gameFactory.camera));
 
     this.gameFactory.createCircle("dummy", { x: 30, y: 30 }, 5);
     this.gameFactory.createCircle("dummy", { x: -30, y: -30 }, 5);

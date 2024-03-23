@@ -1,6 +1,7 @@
 import { ElementRef } from "@angular/core";
 import { GameFactory } from "./game.factory";
 import { Camera } from "../game_object/camera";
+import { IAnimateCallback, IKeydownCallback, IKeyupCallback } from "../interfaces/callback-interface";
 
 export abstract class GameEngine {
 
@@ -17,7 +18,15 @@ export abstract class GameEngine {
         this.draw();
     }
 
-    abstract animate(canvas: CanvasRenderingContext2D): void;
+    protected onKeydown(event: KeyboardEvent): void {
+        const keydownCallbackList = this.gameFactory.customControls as IKeydownCallback[];
+        keydownCallbackList.forEach(control => control.keydown(event))
+    }
+
+    protected onKeyup(event: KeyboardEvent): void {
+        const keydownCallbackList = this.gameFactory.customControls as IKeyupCallback[];
+        keydownCallbackList.forEach(control => control.keyup(event))
+    }
 
     private draw(): void {
         this.drawShape.clearRect(0, 0, this.canvas.nativeElement.width, this.canvas.nativeElement.height);
@@ -26,8 +35,10 @@ export abstract class GameEngine {
         this.drawShape.fillStyle = 'lightblue'; // Set background color
         this.drawShape.fillRect(0, 0, this.canvas.nativeElement.width, this.canvas.nativeElement.height);
 
-        this.animate(this.drawShape);
+        const animateCallbackList = this.gameFactory.customControls as IAnimateCallback[];
+        animateCallbackList.forEach(control => control.animate());
         this.gameFactory.gameObjects.forEach(obj => obj.draw(this.drawShape));
+
         requestAnimationFrame(() => this.draw());
     }
 
@@ -49,13 +60,11 @@ export abstract class GameEngine {
             const ratio = windowWidth / windowHeight;
             const newWidth = ((this.camera.defaultWidth * ratio));
             this.camera.setWidth(newWidth);
-            
         }
         else if (windowWidth < windowHeight) {
             const ratio = windowHeight / windowWidth;
             const newHeight = ((this.camera.defaultHeight * ratio));
             this.camera.setHeight(newHeight);
-            
         }
     }
 

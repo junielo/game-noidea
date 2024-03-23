@@ -7,13 +7,12 @@ export class Camera implements IGameObject {
     anchorPoint: IPoint;
     static bounds: Boundary;
     // static defaultBounds: Boundary;
-    cameraWidth: number = 100;
-    cameraHeight: number = 100;
-    defaultWidth: number = 100;
-    defaultHeight: number = 100;
+    cameraWidth: number = 300;
+    cameraHeight: number = 300;
+    defaultWidth: number = 300;
+    defaultHeight: number = 300;
     tag: string = "camera";
     parent: IGameObject | null;
-    children: IGameObject[] | null;
     bgColor: string = 'red'
 
     constructor(point: IPoint) {
@@ -25,7 +24,6 @@ export class Camera implements IGameObject {
             right: this.anchorPoint.x + this.defaultWidth / 2
         });
         this.parent = null;
-        this.children = [];
     }
 
     resetBounds() {
@@ -38,8 +36,9 @@ export class Camera implements IGameObject {
         this.setHeight(this.cameraHeight);
     }
 
-    setBGColor(color: string): void {
+    setBGColor(color: string): this {
         // No need to set the color of the camera
+        return this;
     }
 
     draw(canvas: CanvasRenderingContext2D): void {
@@ -57,34 +56,9 @@ export class Camera implements IGameObject {
         Camera.bounds.getBounds().top = this.anchorPoint.y - height / 2;
         Camera.bounds.getBounds().bottom =  this.anchorPoint.y + height / 2;
     }
-
-    moveLeft(steps: number): void {
-        this.anchorPoint.x -= steps;
-        this.setBounds();
-        this.children?.forEach(child => child.moveAnchor(this.anchorPoint));
-    }
-
-    moveRight(steps: number): void {
-        this.anchorPoint.x += steps;
-        this.setBounds();
-        this.children?.forEach(child => child.moveAnchor(this.anchorPoint));
-    }
-
-    moveUp(steps: number): void {
-        this.anchorPoint.y -= steps;
-        this.setBounds();
-        this.children?.forEach(child => child.moveAnchor(this.anchorPoint));
-    }
-
-    moveDown(steps: number): void {
-        this.anchorPoint.y += steps;
-        this.setBounds();
-        this.children?.forEach(child => child.moveAnchor(this.anchorPoint));
-    }
-
+    
     moveAnchor(point: IPoint): void {
         this.anchorPoint = { ...point };
         this.setBounds();
     }
-
 }
