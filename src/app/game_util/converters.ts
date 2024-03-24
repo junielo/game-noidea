@@ -15,3 +15,7 @@ export function worldToPixelCoordinate(canvas: CanvasRenderingContext2D, point: 
 
     return { x, y };
 }
+
+export function isPointSame(a: IPoint, b: IPoint): boolean {
+    return a.x === b.x && a.y === b.y;
+}

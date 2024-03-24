@@ -10,36 +10,19 @@ export abstract class GameEngine {
 
     protected gameFactory: GameFactory = new GameFactory();
     private camera: Camera = this.gameFactory.camera;
+    private animateCallbacks: IAnimateCallback[] = [];
+    private keydownCallbacks: IKeydownCallback[] = [];
+    private keyupCallbacks: IKeyupCallback[] = [];
+
+    protected abstract setupScene(): void;
 
     protected setCanvasRef(canvas: ElementRef<HTMLCanvasElement>): void {
         this.canvas = canvas;
         this.drawShape = canvas.nativeElement.getContext('2d') as CanvasRenderingContext2D;
+        this.setupScene();
+        this.setupGameCallbacks();
         this.scaleCanvas();
         this.draw();
-    }
-
-    protected onKeydown(event: KeyboardEvent): void {
-        const keydownCallbackList = this.gameFactory.customControls as IKeydownCallback[];
-        keydownCallbackList.forEach(control => control.keydown(event))
-    }
-
-    protected onKeyup(event: KeyboardEvent): void {
-        const keydownCallbackList = this.gameFactory.customControls as IKeyupCallback[];
-        keydownCallbackList.forEach(control => control.keyup(event))
-    }
-
-    private draw(): void {
-        this.drawShape.clearRect(0, 0, this.canvas.nativeElement.width, this.canvas.nativeElement.height);
-
-        // Draw the background
-        this.drawShape.fillStyle = 'lightblue'; // Set background color
-        this.drawShape.fillRect(0, 0, this.canvas.nativeElement.width, this.canvas.nativeElement.height);
-
-        const animateCallbackList = this.gameFactory.customControls as IAnimateCallback[];
-        animateCallbackList.forEach(control => control.animate());
-        this.gameFactory.gameObjects.forEach(obj => obj.draw(this.drawShape));
-
-        requestAnimationFrame(() => this.draw());
     }
 
     protected scaleCanvas(): void {
@@ -66,6 +49,33 @@ export abstract class GameEngine {
             const newHeight = ((this.camera.defaultHeight * ratio));
             this.camera.setHeight(newHeight);
         }
+    }
+
+    protected onKeydown(event: KeyboardEvent): void {
+        this.keydownCallbacks.forEach(control => control.keydown(event));
+    }
+
+    protected onKeyup(event: KeyboardEvent): void {
+        this.keyupCallbacks.forEach(control => control.keyup(event));
+    }
+
+    private draw(): void {
+        this.drawShape.clearRect(0, 0, this.canvas.nativeElement.width, this.canvas.nativeElement.height);
+
+        // Draw the background
+        this.drawShape.fillStyle = 'lightblue'; // Set background color
+        this.drawShape.fillRect(0, 0, this.canvas.nativeElement.width, this.canvas.nativeElement.height);
+
+        this.animateCallbacks.forEach(control => control.animate());
+        this.gameFactory.gameObjects.forEach(obj => obj.draw(this.drawShape));
+
+        requestAnimationFrame(() => this.draw());
+    }
+
+    private setupGameCallbacks(): void {
+        this.animateCallbacks = this.gameFactory.customControls.filter((control): control is IAnimateCallback => "animate" in control);
+        this.keydownCallbacks = this.gameFactory.customControls.filter((control): control is IKeydownCallback => "keydown" in control);
+        this.keyupCallbacks = this.gameFactory.customControls.filter((control): control is IKeyupCallback => "keyup" in control);
     }
 
 }

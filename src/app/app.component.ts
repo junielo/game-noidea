@@ -5,6 +5,7 @@ import { IGameObject } from './dimensions/game-object';
 import { CircleMovements } from './animation_controller/circle-movements';
 import { Circle } from './game_object/circle';
 import { CopyPositionConstraint } from './constraints/copy-position';
+import { DelayTransition } from './animation_controller/delay-transition';
 
 @Component({
   selector: 'app-root',
@@ -18,12 +19,8 @@ export class AppComponent extends GameEngine implements AfterViewInit {
   @ViewChild('canvas') canvasRef!: ElementRef<HTMLCanvasElement>;
 
   mainPlayer: IGameObject | null = null;
-  keyPress: string = '';
-  keyDownCnt: number = 0;
-  walkSpeed: number = 1;
 
   ngAfterViewInit(): void {
-    this.setupScene();
     this.setCanvasRef(this.canvasRef);
   }
 
@@ -42,12 +39,13 @@ export class AppComponent extends GameEngine implements AfterViewInit {
     this.onKeyup(event);
   }
 
-  setupScene() {
+  override setupScene() {
     this.mainPlayer = this.gameFactory.createCircle("Player", { x: 0, y: 0 }, 2.1)
     this.gameFactory.addAnimControls(new CircleMovements(this.mainPlayer as Circle));
     this.mainPlayer.setBGColor('blue');
 
     this.gameFactory.addAnimControls(new CopyPositionConstraint(this.mainPlayer, this.gameFactory.camera));
+    this.gameFactory.addAnimControls(new DelayTransition(this.gameFactory.camera, 1500));
 
     this.gameFactory.createCircle("dummy", { x: 30, y: 30 }, 5);
     this.gameFactory.createCircle("dummy", { x: -30, y: -30 }, 5);

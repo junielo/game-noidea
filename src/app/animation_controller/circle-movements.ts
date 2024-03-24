@@ -7,7 +7,6 @@ export class CircleMovements implements IAnimateCallback, IKeydownCallback, IKey
     private circle: Circle;
 
     keyPress: string = '';
-    keyDownCnt: number = 0;
     walkSpeed: number = 1;
 
     constructor(params: Circle) {
