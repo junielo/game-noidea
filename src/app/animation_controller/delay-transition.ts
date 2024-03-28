@@ -3,26 +3,6 @@ import { IPoint } from "../dimensions/point";
 import { isPointSame } from "../game_util/converters";
 import { IAnimateCallback, IKeydownCallback, IKeyupCallback } from "../interfaces/callback-interface";
 
-/**
- * When either the w, a, s, or d key is pressed:
- *   If delayStarted is 0:
- *     The delayStarted will be set to the current time in Millisseconds.
- *     
- * In Animation Frame:
- *   If delayStarted is not 0:
- *     The gameObject's position will be saved to truePositionList.
- *     If the current time in Millisseconds minus delayStarted is less than delayInMillis:
- *       The gameObject will not move. [Assign the index 0 of truePositionList]
- *     If the current time in Millisseconds minus delayStarted is greater than delayInMillis:
- *       Divide the delayInMillis by the difference between current time in Millisseconds and delayStarted.
- *       Multiply the result above by the truePositionList size to get the index for the delayed position
- *       If the result above is less than the truePositionList size
- *         Assign the result index above to the gameObject's position
- *       Else
- *         Make delayStarted equal to 0
- *         Empty the truePositionList array
- */
-
 export class DelayTransition implements IAnimateCallback, IKeydownCallback, IKeyupCallback {
 
     private gameObject: IGameObject;
@@ -55,10 +35,8 @@ export class DelayTransition implements IAnimateCallback, IKeydownCallback, IKey
             const timeDelta = performance.now() - this.delayStarted;
             const index = Math.round((timeDelta / this.delayInMillis) * this.truePositionList.length);
             if(index < this.truePositionList.length) {
-                // console.log(this.truePositionList[index]);
                 this.gameObject.moveAnchor({...this.truePositionList[index]});
             } else {
-                // console.log(this.truePositionList)
                 this.delayStarted = 0;
                 this.truePositionList = [];
             }

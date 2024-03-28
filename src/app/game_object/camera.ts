@@ -7,10 +7,10 @@ export class Camera implements IGameObject {
     anchorPoint: IPoint;
     static bounds: Boundary;
     // static defaultBounds: Boundary;
-    cameraWidth: number = 300;
-    cameraHeight: number = 300;
-    defaultWidth: number = 300;
-    defaultHeight: number = 300;
+    cameraWidth: number = 100;
+    cameraHeight: number = 100;
+    defaultWidth: number = 100;
+    defaultHeight: number = 100;
     tag: string = "camera";
     parent: IGameObject | null;
     bgColor: string = 'red'

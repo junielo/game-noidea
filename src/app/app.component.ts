@@ -6,6 +6,7 @@ import { CircleMovements } from './animation_controller/circle-movements';
 import { Circle } from './game_object/circle';
 import { CopyPositionConstraint } from './constraints/copy-position';
 import { DelayTransition } from './animation_controller/delay-transition';
+import { Time } from './game_util/time-util';
 
 @Component({
   selector: 'app-root',
@@ -21,6 +22,7 @@ export class AppComponent extends GameEngine implements AfterViewInit {
   mainPlayer: IGameObject | null = null;
 
   ngAfterViewInit(): void {
+    Time.setPreviousTime(performance.now());
     this.setCanvasRef(this.canvasRef);
   }
 
@@ -47,9 +49,9 @@ export class AppComponent extends GameEngine implements AfterViewInit {
     this.gameFactory.addAnimControls(new CopyPositionConstraint(this.mainPlayer, this.gameFactory.camera));
     this.gameFactory.addAnimControls(new DelayTransition(this.gameFactory.camera, 1500));
 
-    this.gameFactory.createCircle("dummy", { x: 30, y: 30 }, 5);
-    this.gameFactory.createCircle("dummy", { x: -30, y: -30 }, 5);
-    this.gameFactory.createCircle("dummy", { x: -30, y: 30 }, 5);
-    this.gameFactory.createCircle("dummy", { x: 30, y: -30 }, 5);
+    this.gameFactory.createCircle("dummy", { x: 20, y: 20 }, 3);
+    this.gameFactory.createCircle("dummy", { x: -20, y: -20 }, 3);
+    this.gameFactory.createCircle("dummy", { x: -20, y: 20 }, 3);
+    this.gameFactory.createCircle("dummy", { x: 20, y: -20 }, 3);
   }
 }

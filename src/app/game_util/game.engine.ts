@@ -2,6 +2,7 @@ import { ElementRef } from "@angular/core";
 import { GameFactory } from "./game.factory";
 import { Camera } from "../game_object/camera";
 import { IAnimateCallback, IKeydownCallback, IKeyupCallback } from "../interfaces/callback-interface";
+import { Time } from "./time-util";
 
 export abstract class GameEngine {
 
@@ -60,6 +61,7 @@ export abstract class GameEngine {
     }
 
     private draw(): void {
+        Time.setCurrentTime();
         this.drawShape.clearRect(0, 0, this.canvas.nativeElement.width, this.canvas.nativeElement.height);
 
         // Draw the background
@@ -68,7 +70,7 @@ export abstract class GameEngine {
 
         this.animateCallbacks.forEach(control => control.animate());
         this.gameFactory.gameObjects.forEach(obj => obj.draw(this.drawShape));
-
+        Time.setPreviousTime();
         requestAnimationFrame(() => this.draw());
     }
 
