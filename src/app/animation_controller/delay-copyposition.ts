@@ -4,7 +4,7 @@ import { getDecimal, isPointSame } from "../game_util/computations";
 import { Time } from "../game_util/time-util";
 import { IAnimateCallback, IKeydownCallback, IKeyupCallback } from "../interfaces/callback-interface";
 
-export class DelayTransition implements IAnimateCallback, IKeydownCallback, IKeyupCallback {
+export class DelayCopyPosition implements IAnimateCallback, IKeydownCallback, IKeyupCallback {
 
     private gameObject: IGameObject;
     private truePositionList: IPoint[] = [];
@@ -19,6 +19,12 @@ export class DelayTransition implements IAnimateCallback, IKeydownCallback, IKey
         this.keyLastChanged = Time.now();
     }
 
+    /**
+     * The idea on the mechanics of this delay copy position constraint is to first store the true position of the followed object
+     * then we will get the index where the main object needs to move by getting the time delta and dividing it by the delayInMillis and multiplying it by the length of the true position list.
+     * Next is we need to interpolate movement of the main object by getting the decimal point of the computed index
+     * and calculating the x and y position of the main object by subtracting the current position to the next position and multiplying it by the decimal point and add it back to the current position.
+     */
     animate(): void {
         if (this.keyPress === 'w' || this.keyPress === 's' || this.keyPress === 'a' || this.keyPress === 'd') {
             if (this.delayStarted === 0){

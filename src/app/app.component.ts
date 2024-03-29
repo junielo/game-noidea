@@ -5,7 +5,7 @@ import { IGameObject } from './dimensions/game-object';
 import { CircleMovements } from './animation_controller/circle-movements';
 import { Circle } from './game_object/circle';
 import { CopyPositionConstraint } from './constraints/copy-position';
-import { DelayTransition } from './animation_controller/delay-transition';
+import { DelayCopyPosition } from './animation_controller/delay-copyposition';
 import { Time } from './game_util/time-util';
 
 @Component({
@@ -47,7 +47,7 @@ export class AppComponent extends GameEngine implements AfterViewInit {
     this.mainPlayer.setBGColor('blue');
 
     this.gameFactory.addAnimControls(new CopyPositionConstraint(this.mainPlayer, this.gameFactory.camera));
-    this.gameFactory.addAnimControls(new DelayTransition(this.gameFactory.camera, 1500));
+    this.gameFactory.addAnimControls(new DelayCopyPosition(this.gameFactory.camera, 1500));
 
     this.gameFactory.createCircle("dummy", { x: 20, y: 20 }, 3);
     this.gameFactory.createCircle("dummy", { x: -20, y: -20 }, 3);

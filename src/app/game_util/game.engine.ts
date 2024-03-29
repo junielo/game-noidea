@@ -26,6 +26,10 @@ export abstract class GameEngine {
         this.draw();
     }
 
+    /**
+     * scaleCanvas function is to ensure that the canvas is scaled properly
+     * every time the window is resized.
+     */
     protected scaleCanvas(): void {
         const canvas = this.canvas.nativeElement;
         const dpr = window.devicePixelRatio || 1;
