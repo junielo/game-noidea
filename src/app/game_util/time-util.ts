@@ -18,4 +18,8 @@ export class Time {
         Time.previousTime = time
     }
 
+    static now() : number {
+        return performance.now()
+    }
+
 }

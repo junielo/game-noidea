@@ -1,6 +1,6 @@
 import { IGameObject as IGameObject } from "../dimensions/game-object";
 import { IPoint } from "../dimensions/point";
-import { worldToPixelCoordinate } from "../game_util/converters";
+import { worldToPixelCoordinate } from "../game_util/computations";
 
 export class Circle implements IGameObject{
     tag: string;

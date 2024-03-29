@@ -19,3 +19,7 @@ export function worldToPixelCoordinate(canvas: CanvasRenderingContext2D, point: 
 export function isPointSame(a: IPoint, b: IPoint): boolean {
     return a.x === b.x && a.y === b.y;
 }
+
+export function getDecimal(number: number): number {
+    return number - Math.floor(number);
+}
