@@ -1,10 +1,15 @@
-
+import { Signal, signal } from "@angular/core";
 
 export class Time {
 
     private static currentTime : number 
     private static previousTime : number
     private static readonly timeSpeed: number = 1000;
+
+    static isViewTime: boolean = false
+    static prevTimeFrame: number = 0
+    static frameCounter = signal(0)
+    static fpsCount = signal(0)
 
     /**
      * The purpose of this function is to multiply it to the distance they want to move the object per second.

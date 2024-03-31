@@ -4,7 +4,7 @@ import { Time } from "../game_util/time-util";
 import { IAnimateCallback, IKeydownCallback, IKeyupCallback } from "../interfaces/callback-interface";
 
 
-export class CircleMovements implements IAnimateCallback, IKeydownCallback, IKeyupCallback {
+export class PlayerMovements implements IAnimateCallback, IKeydownCallback, IKeyupCallback {
 
     private circle: Circle;
     keyPress: string = '';

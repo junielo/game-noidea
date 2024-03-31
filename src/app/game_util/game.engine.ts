@@ -65,6 +65,14 @@ export abstract class GameEngine {
     }
 
     private draw(): void {
+        if (Time.isViewTime) {
+            if (Time.now() - Time.prevTimeFrame >= 1000) {
+                Time.fpsCount.set(Time.frameCounter());
+                Time.frameCounter.set(0);
+                Time.prevTimeFrame = Time.now();
+            }
+            Time.frameCounter.update(value => value + 1)
+        }
         Time.setCurrentTime();
         this.drawShape.clearRect(0, 0, this.canvas.nativeElement.width, this.canvas.nativeElement.height);
 

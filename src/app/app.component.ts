@@ -2,7 +2,7 @@ import { AfterViewInit, Component, ElementRef, HostListener, ViewChild } from '@
 import { RouterOutlet } from '@angular/router';
 import { GameEngine } from './game_util/game.engine';
 import { IGameObject } from './dimensions/game-object';
-import { CircleMovements } from './animation_controller/circle-movements';
+import { PlayerMovements } from './animation_controller/player-movements';
 import { Circle } from './game_object/circle';
 import { CopyPositionConstraint } from './constraints/copy-position';
 import { DelayCopyPosition } from './animation_controller/delay-copyposition';
@@ -20,6 +20,8 @@ export class AppComponent extends GameEngine implements AfterViewInit {
   @ViewChild('canvas') canvasRef!: ElementRef<HTMLCanvasElement>;
 
   mainPlayer: IGameObject | null = null;
+
+  fpsCount = Time.fpsCount;
 
   ngAfterViewInit(): void {
     Time.setPreviousTime(performance.now());
@@ -42,8 +44,9 @@ export class AppComponent extends GameEngine implements AfterViewInit {
   }
 
   override setupScene() {
+    Time.isViewTime = true;
     this.mainPlayer = this.gameFactory.createCircle("Player", { x: 0, y: 0 }, 2.1)
-    this.gameFactory.addAnimControls(new CircleMovements(this.mainPlayer as Circle));
+    this.gameFactory.addAnimControls(new PlayerMovements(this.mainPlayer as Circle));
     this.mainPlayer.setBGColor('blue');
 
     this.gameFactory.addAnimControls(new CopyPositionConstraint(this.mainPlayer, this.gameFactory.camera));

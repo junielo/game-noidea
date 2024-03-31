@@ -23,8 +23,9 @@
         "src\\app/app.component.spec.ts": true,
         "src\\app/app.component.scss": true,
         ".angular": true,
-        "src\\app/app.component.html": true,
-        ".gitignore": true
+        "src\\app/app.component.html": false,
+        ".gitignore": true,
+        "dev_notes": true
     },
     "explorerExclude.backup": {}
 }

@@ -1,0 +1,18 @@
+- [x] Camera Drawing
+- [x] Basic Game Engine
+- [x] Game Factory
+-  **Animation Controller** 
+	- [x] Player Movement
+	- [x] Delay Copy Position with interpolation
+	- [ ] Follow waypoints
+	- [ ] Linear interpolation
+-  **Constraints**
+	- [x] Copy Position
+- [x] Delta time
+- [x] Frame Rate
+- [ ] Try enhance with promise when fps drops below 30
+-  **Physics and Collisions**
+	- [ ] Box collision
+	- [ ] Box physics
+	- [ ] Circle collision
+	- [ ] Circle physics
