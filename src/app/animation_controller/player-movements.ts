@@ -6,28 +6,27 @@ import { IAnimateCallback, IKeydownCallback, IKeyupCallback } from "../interface
 
 export class PlayerMovements implements IAnimateCallback, IKeydownCallback, IKeyupCallback {
 
-    private circle: Circle;
+    private player: IGameObject;
     keyPress: string = '';
     walkSpeed: number = 30;
 
-    constructor(params: Circle) {
-        this.circle = params;
+    constructor(params: IGameObject) {
+        this.player = params;
     }
 
     animate(): void {
-        const walkSpeed = this.walkSpeed * Time.deltaTime();
         if (this.keyPress === 'w') {
-            this.circle.anchorPoint.y -= walkSpeed;
-            this.circle.radiusPoint.y -= walkSpeed;
+            const walkSpeed = this.walkSpeed * (Time.deltaTime() / Time.millisInSecond);
+            this.player.moveAnchor({ x: this.player.anchorPoint.x, y: this.player.anchorPoint.y - walkSpeed})
         } else if (this.keyPress === 's') {
-            this.circle.anchorPoint.y += walkSpeed;
-            this.circle.radiusPoint.y += walkSpeed;
+            const walkSpeed = this.walkSpeed * (Time.deltaTime() / Time.millisInSecond);
+            this.player.moveAnchor({ x: this.player.anchorPoint.x, y: this.player.anchorPoint.y + walkSpeed})
         } else if (this.keyPress === 'a') {
-            this.circle.anchorPoint.x -= walkSpeed;
-            this.circle.radiusPoint.x -= walkSpeed;
+            const walkSpeed = this.walkSpeed * (Time.deltaTime() / Time.millisInSecond);
+            this.player.moveAnchor({ x: this.player.anchorPoint.x - walkSpeed, y: this.player.anchorPoint.y})
         } else if (this.keyPress === 'd') {
-            this.circle.anchorPoint.x += walkSpeed;
-            this.circle.radiusPoint.x += walkSpeed;
+            const walkSpeed = this.walkSpeed * (Time.deltaTime() / Time.millisInSecond);
+            this.player.moveAnchor({ x: this.player.anchorPoint.x + walkSpeed, y: this.player.anchorPoint.y})
         }
     }
 

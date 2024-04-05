@@ -2,9 +2,10 @@ import { Signal, signal } from "@angular/core";
 
 export class Time {
 
+    static readonly millisInSecond: number = 1000
+
     private static currentTime : number 
     private static previousTime : number
-    private static readonly timeSpeed: number = 1000;
 
     static isViewTime: boolean = false
     static prevTimeFrame: number = 0
@@ -17,7 +18,7 @@ export class Time {
      * @returns the time difference between the current time and the previous time divided by the constant speed of 1 second
      */
     static deltaTime() : number {
-        return (Time.currentTime - Time.previousTime) / Time.timeSpeed
+        return Time.currentTime - Time.previousTime
     }
 
     static setCurrentTime() {

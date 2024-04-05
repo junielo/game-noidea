@@ -7,6 +7,7 @@ import { Circle } from './game_object/circle';
 import { CopyPositionConstraint } from './constraints/copy-position';
 import { DelayCopyPosition } from './animation_controller/delay-copyposition';
 import { Time } from './game_util/time-util';
+import { PhysicsMovement } from './animation_controller/physics-movement';
 
 @Component({
   selector: 'app-root',
@@ -46,7 +47,8 @@ export class AppComponent extends GameEngine implements AfterViewInit {
   override setupScene() {
     Time.isViewTime = true;
     this.mainPlayer = this.gameFactory.createCircle("Player", { x: 0, y: 0 }, 2.1)
-    this.gameFactory.addAnimControls(new PlayerMovements(this.mainPlayer as Circle));
+    // this.gameFactory.addAnimControls(new PlayerMovements(this.mainPlayer));
+    this.gameFactory.addAnimControls(new PhysicsMovement(this.mainPlayer, 30, 10, 35));
     this.mainPlayer.setBGColor('blue');
 
     this.gameFactory.addAnimControls(new CopyPositionConstraint(this.mainPlayer, this.gameFactory.camera));
