@@ -48,11 +48,11 @@ export class AppComponent extends GameEngine implements AfterViewInit {
     Time.isViewTime = true;
     this.mainPlayer = this.gameFactory.createCircle("Player", { x: 0, y: 0 }, 2.1)
     // this.gameFactory.addAnimControls(new PlayerMovements(this.mainPlayer));
-    this.gameFactory.addAnimControls(new PhysicsMovement(this.mainPlayer, 30, 10, 35));
+    this.gameFactory.addGameControls(new PhysicsMovement(this.mainPlayer, 30, 10, 35));
     this.mainPlayer.setBGColor('blue');
 
-    this.gameFactory.addAnimControls(new CopyPositionConstraint(this.mainPlayer, this.gameFactory.camera));
-    this.gameFactory.addAnimControls(new DelayCopyPosition(this.gameFactory.camera, 1500));
+    this.gameFactory.addGameControls(new CopyPositionConstraint(this.mainPlayer, this.gameFactory.camera));
+    this.gameFactory.addGameControls(new DelayCopyPosition(this.gameFactory.camera, 1500));
 
     this.gameFactory.createCircle("dummy", { x: 20, y: 20 }, 3);
     this.gameFactory.createCircle("dummy", { x: -20, y: -20 }, 3);

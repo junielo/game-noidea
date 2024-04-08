@@ -87,9 +87,9 @@ export abstract class GameEngine {
     }
 
     private setupGameCallbacks(): void {
-        this.animateCallbacks = this.gameFactory.customControls.filter((control): control is IAnimateCallback => "animate" in control);
-        this.keydownCallbacks = this.gameFactory.customControls.filter((control): control is IKeydownCallback => "keydown" in control);
-        this.keyupCallbacks = this.gameFactory.customControls.filter((control): control is IKeyupCallback => "keyup" in control);
+        this.animateCallbacks = this.gameFactory.gameControls.filter((control): control is IAnimateCallback => "animate" in control);
+        this.keydownCallbacks = this.gameFactory.gameControls.filter((control): control is IKeydownCallback => "keydown" in control);
+        this.keyupCallbacks = this.gameFactory.gameControls.filter((control): control is IKeyupCallback => "keyup" in control);
     }
 
 }

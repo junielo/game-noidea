@@ -4,13 +4,15 @@
 -  **Animation Controller** 
 	- [x] Player Movement
 	- [x] Delay Copy Position with interpolation
+	- [x] Physics movements
 	- [ ] Follow waypoints
-	- [ ] Linear interpolation
+	- [x] Linear interpolation
 -  **Constraints**
 	- [x] Copy Position
 - [x] Delta time
 - [x] Frame Rate
-- [ ] Try enhance with promise when fps drops below 30
+- Try enhance with promise when fps drops below 30
+	- [ ] Execute object function within camera bounds only
 -  **Physics and Collisions**
 	- [ ] Box collision
 	- [ ] Box physics

@@ -7,7 +7,7 @@ export class GameFactory {
 
     camera: Camera = new Camera({ x: 0, y: 0 });
     gameObjects: IGameObject[] = [];
-    customControls: any[] = [];
+    gameControls: any[] = [];
 
     createCircle(tag: string, centerPoint: IPoint, radius: number): IGameObject {
         const circle = new Circle(tag, centerPoint, radius);
@@ -15,8 +15,8 @@ export class GameFactory {
         return circle;
     }
 
-    addAnimControls(animControl: any): void {
-        this.customControls.push(animControl);
+    addGameControls(animControl: any): void {
+        this.gameControls.push(animControl);
     }
 
 }

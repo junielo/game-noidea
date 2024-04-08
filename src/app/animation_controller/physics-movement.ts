@@ -47,12 +47,20 @@ export class PhysicsMovement implements IAnimateCallback, IKeydownCallback, IKey
         }
     }
 
+    /**
+     * @param force 
+     * @returns Previous force minus the opposing force times the time interval
+     */
     private computeOpposedForce(force: number): number {
         const timeInterval = Time.deltaTime() / Time.millisInSecond;
         const opposedForce = Math.max(Math.abs(force) - this.opposing_force * timeInterval, 0) * Math.sign(force)
         return opposedForce
     }
 
+    /**
+     * @param force 
+     * @returns distance traveled by the object in the time delta
+     */
     private computeDistance(force: number): number {
         const acceleration = force / this.mass
         const distance = 0.5 * acceleration * (Math.pow(Time.deltaTime(), 2) / Time.millisInSecond)
