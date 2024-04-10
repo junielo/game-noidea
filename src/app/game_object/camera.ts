@@ -26,6 +26,10 @@ export class Camera implements IGameObject {
         this.parent = null;
     }
 
+    get getBounds(): IBounds {
+       return Camera.bounds.getBounds();
+    }
+
     resetBounds() {
         this.setWidth(this.defaultWidth);
         this.setHeight(this.defaultHeight);

@@ -1,6 +1,6 @@
 import { IPoint } from "./point"
 
-export interface Circle {
+export interface ICircle {
     radius: number
     centerPoint: IPoint
 }

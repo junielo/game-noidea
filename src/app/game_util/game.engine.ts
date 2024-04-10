@@ -1,7 +1,7 @@
 import { ElementRef } from "@angular/core";
 import { GameFactory } from "./game.factory";
 import { Camera } from "../game_object/camera";
-import { IAnimateCallback, IKeydownCallback, IKeyupCallback } from "../interfaces/callback-interface";
+import { IAnimateCallback, IKeydownCallback, IKeyupCallback, IPreAnimateCallback } from "../interfaces/callback-interface";
 import { Time } from "./time-util";
 
 export abstract class GameEngine {
@@ -12,6 +12,7 @@ export abstract class GameEngine {
     protected gameFactory: GameFactory = new GameFactory();
     private camera: Camera = this.gameFactory.camera;
     private animateCallbacks: IAnimateCallback[] = [];
+    private preAnimateCallbacks: IPreAnimateCallback[] = [];
     private keydownCallbacks: IKeydownCallback[] = [];
     private keyupCallbacks: IKeyupCallback[] = [];
 
@@ -80,6 +81,7 @@ export abstract class GameEngine {
         this.drawShape.fillStyle = 'lightblue'; // Set background color
         this.drawShape.fillRect(0, 0, this.canvas.nativeElement.width, this.canvas.nativeElement.height);
 
+        this.preAnimateCallbacks.forEach(control => control.preAnimate());
         this.animateCallbacks.forEach(control => control.animate());
         this.gameFactory.gameObjects.forEach(obj => obj.draw(this.drawShape));
         Time.setPreviousTime();
@@ -88,6 +90,7 @@ export abstract class GameEngine {
 
     private setupGameCallbacks(): void {
         this.animateCallbacks = this.gameFactory.gameControls.filter((control): control is IAnimateCallback => "animate" in control);
+        this.preAnimateCallbacks = this.gameFactory.gameControls.filter((control): control is IPreAnimateCallback => "preAnimate" in control);
         this.keydownCallbacks = this.gameFactory.gameControls.filter((control): control is IKeydownCallback => "keydown" in control);
         this.keyupCallbacks = this.gameFactory.gameControls.filter((control): control is IKeyupCallback => "keyup" in control);
     }

@@ -8,6 +8,7 @@ import { CopyPositionConstraint } from './constraints/copy-position';
 import { DelayCopyPosition } from './animation_controller/delay-copyposition';
 import { Time } from './game_util/time-util';
 import { PhysicsMovement } from './animation_controller/physics-movement';
+import { BasicBoxCollision } from './game_collisions/basic-box-collision';
 
 @Component({
   selector: 'app-root',
@@ -46,17 +47,22 @@ export class AppComponent extends GameEngine implements AfterViewInit {
 
   override setupScene() {
     Time.isViewTime = true;
-    this.mainPlayer = this.gameFactory.createCircle("Player", { x: 0, y: 0 }, 2.1)
-    // this.gameFactory.addAnimControls(new PlayerMovements(this.mainPlayer));
-    this.gameFactory.addGameControls(new PhysicsMovement(this.mainPlayer, 30, 10, 35));
+    this.mainPlayer = this.gameFactory.createCircle("Player", { x: 0, y: 0 }, 2.1);
     this.mainPlayer.setBGColor('blue');
+    // this.gameFactory.addAnimControls(new PlayerMovements(this.mainPlayer));
+    this.gameFactory.addGameControls(new PhysicsMovement(this.mainPlayer, 30, 10, 60));
+    this.gameFactory.addGameCollision(new BasicBoxCollision(this.mainPlayer))
 
     this.gameFactory.addGameControls(new CopyPositionConstraint(this.mainPlayer, this.gameFactory.camera));
     this.gameFactory.addGameControls(new DelayCopyPosition(this.gameFactory.camera, 1500));
 
-    this.gameFactory.createCircle("dummy", { x: 20, y: 20 }, 3);
-    this.gameFactory.createCircle("dummy", { x: -20, y: -20 }, 3);
-    this.gameFactory.createCircle("dummy", { x: -20, y: 20 }, 3);
-    this.gameFactory.createCircle("dummy", { x: 20, y: -20 }, 3);
+    this.gameFactory.addGameCollision(
+      new BasicBoxCollision(this.gameFactory.createCircle("dummy", { x: 20, y: 20 }, 3)))
+    this.gameFactory.addGameCollision(
+      new BasicBoxCollision(this.gameFactory.createCircle("dummy", { x: -20, y: -20 }, 3)))
+    this.gameFactory.addGameCollision(
+      new BasicBoxCollision(this.gameFactory.createCircle("dummy", { x: -20, y: 20 }, 3)))
+    this.gameFactory.addGameCollision(
+      new BasicBoxCollision(this.gameFactory.createCircle("dummy", { x: 20, y: -20 }, 3)))
   }
 }
