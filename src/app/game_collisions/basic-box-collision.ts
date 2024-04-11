@@ -28,5 +28,4 @@ export class BasicBoxCollision extends GameCollision {
         const physicsMovement = this.getGameControl<PhysicsMovement>('physicsMovement')
     }
     
-
 }
