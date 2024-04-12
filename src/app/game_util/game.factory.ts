@@ -3,6 +3,7 @@ import { IPoint } from "../dimensions/point";
 import { GameCollision } from "../game_collisions/collision";
 import { Camera } from "../game_object/camera";
 import { Circle } from "../game_object/circle";
+import { Rectangle } from "../game_object/rectangle";
 
 export class GameFactory {
 
@@ -15,6 +16,12 @@ export class GameFactory {
         const circle = new Circle(tag, centerPoint, radius);
         this.gameObjects.push(circle);
         return circle;
+    }
+
+    createRectangle(tag: string, centerPoint: IPoint, width: number, height: number): IGameObject {
+        const rectangle = new Rectangle(tag, centerPoint, width, height);
+        this.gameObjects.push(rectangle);
+        return rectangle;
     }
 
     addGameControls(animControl: any): void {

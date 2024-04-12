@@ -3,10 +3,11 @@ import { IPoint } from "../dimensions/point";
 import { getDecimal, isPointSame } from "../game_util/computations";
 import { Time } from "../game_util/time-util";
 import { IAnimateCallback, IKeydownCallback, IKeyupCallback } from "../interfaces/callback-interface";
+import { IMainObject } from "../interfaces/game-object";
 
-export class DelayCopyPosition implements IAnimateCallback, IKeydownCallback, IKeyupCallback {
+export class DelayCopyPosition implements IMainObject, IAnimateCallback, IKeydownCallback, IKeyupCallback {
 
-    private gameObject: IGameObject;
+    readonly _mainObject: IGameObject;
     private truePositionList: IPoint[] = [];
     private delayInMillis: number;
     private delayStarted: number = 0;
@@ -14,9 +15,13 @@ export class DelayCopyPosition implements IAnimateCallback, IKeydownCallback, IK
     private keyPress: string = '';
 
     constructor(gameObject: IGameObject, delayInMillis: number) {
-        this.gameObject = gameObject;
+        this._mainObject = gameObject;
         this.delayInMillis = delayInMillis;
         this.keyLastChanged = Time.now();
+    }
+    
+    mainObject(): IGameObject {
+        return this._mainObject
     }
 
     /**
@@ -30,15 +35,15 @@ export class DelayCopyPosition implements IAnimateCallback, IKeydownCallback, IK
             if (this.delayStarted === 0){
                 if (Time.now() - this.keyLastChanged > 300) {
                     this.delayStarted = Time.now();
-                    this.truePositionList.push({...this.gameObject.anchorPoint});
+                    this.truePositionList.push({...this._mainObject.anchorPoint});
                 }
             }
             this.keyLastChanged = Time.now();
         }
 
         if (this.delayStarted !== 0) {
-            if(this.truePositionList.length === 0 || !isPointSame(this.truePositionList.slice(-1)[0], this.gameObject.anchorPoint))
-                this.truePositionList.push({...this.gameObject.anchorPoint});
+            if(this.truePositionList.length === 0 || !isPointSame(this.truePositionList.slice(-1)[0], this._mainObject.anchorPoint))
+                this.truePositionList.push({...this._mainObject.anchorPoint});
             const timeDelta = Time.now() - this.delayStarted;
             const computed = (timeDelta / this.delayInMillis) * this.truePositionList.length;
             const index = Math.floor(computed);
@@ -47,9 +52,9 @@ export class DelayCopyPosition implements IAnimateCallback, IKeydownCallback, IK
                     const decimalPoint = getDecimal(computed)
                     const x = this.truePositionList[index].x + (this.truePositionList[index + 1].x - this.truePositionList[index].x) * decimalPoint;
                     const y = this.truePositionList[index].y + (this.truePositionList[index + 1].y - this.truePositionList[index].y) * decimalPoint;
-                    this.gameObject.moveAnchor({x, y});
+                    this._mainObject.moveAnchor({x, y});
                 } else {
-                    this.gameObject.moveAnchor({...this.truePositionList[index]});
+                    this._mainObject.moveAnchor({...this.truePositionList[index]});
                 }
             } else {
                 this.delayStarted = 0;

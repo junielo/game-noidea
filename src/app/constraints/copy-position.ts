@@ -1,18 +1,24 @@
+import { retry } from "rxjs";
 import { IGameObject } from "../dimensions/game-object";
 import { IAnimateCallback } from "../interfaces/callback-interface";
+import { IMainObject } from "../interfaces/game-object";
 
-export class CopyPositionConstraint implements IAnimateCallback {
+export class CopyPositionConstraint implements IMainObject, IAnimateCallback {
     
-    followFrom: IGameObject;
+    readonly _mainObject: IGameObject;
     followTo: IGameObject;
 
     constructor(followFrom: IGameObject, followTo: IGameObject) {
-        this.followFrom = followFrom;
+        this._mainObject = followFrom;
         this.followTo = followTo;
     }
 
+    mainObject(): IGameObject {
+        return this._mainObject;
+    }
+
     animate(): void {
-        this.followTo.moveAnchor({...this.followFrom.anchorPoint});
+        this.followTo.moveAnchor({...this._mainObject.anchorPoint});
     }
 
 }

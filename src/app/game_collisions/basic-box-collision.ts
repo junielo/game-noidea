@@ -25,7 +25,11 @@ export class BasicBoxCollision extends GameCollision {
     }
 
     override collisionEffect(gameObject: IGameObject): void {
-        const physicsMovement = this.getGameControl<PhysicsMovement>('physicsMovement')
+        const physicsMovement: PhysicsMovement = this.getGameControl(PhysicsMovement)
+        if(physicsMovement) {
+            physicsMovement.setVerticalForce(0)
+            physicsMovement.setHorizontalForce(0)
+        }
     }
     
 }

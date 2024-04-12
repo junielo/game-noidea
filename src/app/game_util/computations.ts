@@ -29,6 +29,17 @@ export function worldToPixelCoordinate(canvas: CanvasRenderingContext2D, point: 
     return { x, y };
 }
 
+export function worldToPixelWidth(canvas: CanvasRenderingContext2D, width: number, height: number): [number, number] {
+    const canvasWidth = canvas.canvas.clientWidth;
+    const camWidth = Camera.bounds.getWidth()
+    const newWidth = (width / camWidth) * canvasWidth;
+
+    const canvasHeight = canvas.canvas.clientHeight;
+    const camHeight = Camera.bounds.getHeight()
+    const newHeight = (height / camHeight) * canvasHeight;
+    return [newWidth, newHeight];
+}
+
 export function isPointSame(a: IPoint, b: IPoint): boolean {
     return a.x === b.x && a.y === b.y;
 }

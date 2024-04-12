@@ -1,26 +1,28 @@
 import { IGameObject } from "../dimensions/game-object";
 import { Time } from "../game_util/time-util";
 import { IAnimateCallback, IKeydownCallback, IKeyupCallback } from "../interfaces/callback-interface";
+import { IMainObject } from "../interfaces/game-object";
 
-export class PhysicsMovement implements IAnimateCallback, IKeydownCallback, IKeyupCallback {
-
-    private physicsMovement = 'physicsMovement'
+export class PhysicsMovement implements IMainObject, IAnimateCallback, IKeydownCallback, IKeyupCallback {
 
     private force: number;
     private force_x: number = 0;
     private force_y: number = 0;
     private mass: number;
     private opposing_force: number;
-    private gameObject: IGameObject;
+    readonly _mainObject: IGameObject;
     private keyPress: string = '';
 
     constructor(gameObject: IGameObject, force: number, mass: number, opposing_force: number) {
-        this.gameObject = gameObject;
+        this._mainObject = gameObject;
         this.force = force;
         this.mass = mass;
         this.opposing_force = opposing_force;
     }
-    
+
+    mainObject(): IGameObject {
+        return this._mainObject
+    }
 
     animate(): void {
 
@@ -36,18 +38,26 @@ export class PhysicsMovement implements IAnimateCallback, IKeydownCallback, IKey
 
         if (Math.abs(this.force_x) > 0) {
             this.force_x = this.computeOpposedForce(this.force_x)
-            this.gameObject.moveAnchor({ 
-                x: this.gameObject.anchorPoint.x + this.computeDistance(this.force_x), 
-                y: this.gameObject.anchorPoint.y 
+            this._mainObject.moveAnchor({ 
+                x: this._mainObject.anchorPoint.x + this.computeDistance(this.force_x), 
+                y: this._mainObject.anchorPoint.y 
             })
         } 
         if (Math.abs(this.force_y) > 0) {
             this.force_y = this.computeOpposedForce(this.force_y)
-            this.gameObject.moveAnchor({ 
-                x: this.gameObject.anchorPoint.x, 
-                y: this.gameObject.anchorPoint.y + this.computeDistance(this.force_y) 
+            this._mainObject.moveAnchor({ 
+                x: this._mainObject.anchorPoint.x, 
+                y: this._mainObject.anchorPoint.y + this.computeDistance(this.force_y) 
             })
         }
+    }
+
+    keydown(event: KeyboardEvent): void {
+        this.keyPress = event.key;
+    }
+
+    keyup(event: KeyboardEvent): void {
+        if (this.keyPress === event.key) this.keyPress = ''
     }
 
     /**
@@ -68,15 +78,22 @@ export class PhysicsMovement implements IAnimateCallback, IKeydownCallback, IKey
         const acceleration = force / this.mass
         const distance = 0.5 * acceleration * (Math.pow(Time.deltaTime(), 2) / Time.millisInSecond)
         return distance
-
     }
 
-    keydown(event: KeyboardEvent): void {
-        this.keyPress = event.key;
+    getHorizontalForce(): number {
+        return this.force_x
     }
 
-    keyup(event: KeyboardEvent): void {
-        if (this.keyPress === event.key) this.keyPress = ''
+    getVerticalForce(): number {
+        return this.force_y
+    }
+
+    setHorizontalForce(force: number): void {
+        this.force_x = force
+    }
+
+    setVerticalForce(force: number): void {
+        this.force_y = force
     }
 
 }

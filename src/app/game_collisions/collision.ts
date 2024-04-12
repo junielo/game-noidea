@@ -2,30 +2,35 @@ import { IBounds } from "../dimensions/boundary";
 import { IGameObject } from "../dimensions/game-object";
 import { IPoint } from "../dimensions/point";
 import { IAnimateCallback, IPreAnimateCallback } from "../interfaces/callback-interface";
+import { IMainObject } from "../interfaces/game-object";
 
-export abstract class GameCollision implements IAnimateCallback, IPreAnimateCallback {
+export abstract class GameCollision implements IMainObject, IAnimateCallback, IPreAnimateCallback {
 
-    private _currentObject: IGameObject
+    readonly _mainObject: IGameObject
     private collisionList: GameCollision[] = []
     private gameControlList: any[] = []
     preAnchorPoint: IPoint;
 
     constructor(player: IGameObject) {
-        this._currentObject = player
+        this._mainObject = player
         this.preAnchorPoint = player.anchorPoint
     }
     
+    mainObject(): IGameObject {
+        return this._mainObject
+    }
+    
     preAnimate(): void {
-        this.preAnchorPoint = this._currentObject.anchorPoint
+        this.preAnchorPoint = this._mainObject.anchorPoint
     }
 
     animate(): void {
-        if (JSON.stringify(this.preAnchorPoint) === JSON.stringify(this._currentObject.anchorPoint)) return
+        if (JSON.stringify(this.preAnchorPoint) === JSON.stringify(this._mainObject.anchorPoint)) return
         this.collisionList.forEach((collisionObject) => {
-            if (this._currentObject !== collisionObject._currentObject) {
-                if (this.isCollision(this._currentObject, collisionObject._currentObject)) {
-                    this._currentObject.moveAnchor({ ...this.preAnchorPoint })
-                    this.collisionEffect(collisionObject._currentObject)
+            if (this._mainObject !== collisionObject._mainObject) {
+                if (this.isCollision(this._mainObject, collisionObject._mainObject)) {
+                    this._mainObject.moveAnchor({ ...this.preAnchorPoint })
+                    this.collisionEffect(collisionObject._mainObject)
                 }
             }
         })
@@ -48,8 +53,15 @@ export abstract class GameCollision implements IAnimateCallback, IPreAnimateCall
         this.gameControlList = gameControls;
     }
 
-    getGameControl<T>(fnName: string): T | undefined {
-        return this.gameControlList.find((control): control is T => fnName in control)
+    getGameControl(classParam: { new(...args: any[]): any }) {
+        return this.gameControlList.find((control) => {
+            if (control instanceof classParam && '_mainObject' in control) {
+                if ((control as IMainObject).mainObject() === this._mainObject) {
+                    return true
+                }
+            }
+            return false
+        })
     }
 
 }

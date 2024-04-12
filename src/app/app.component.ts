@@ -56,13 +56,22 @@ export class AppComponent extends GameEngine implements AfterViewInit {
     this.gameFactory.addGameControls(new CopyPositionConstraint(this.mainPlayer, this.gameFactory.camera));
     this.gameFactory.addGameControls(new DelayCopyPosition(this.gameFactory.camera, 1500));
 
-    this.gameFactory.addGameCollision(
-      new BasicBoxCollision(this.gameFactory.createCircle("dummy", { x: 20, y: 20 }, 3)))
-    this.gameFactory.addGameCollision(
-      new BasicBoxCollision(this.gameFactory.createCircle("dummy", { x: -20, y: -20 }, 3)))
-    this.gameFactory.addGameCollision(
-      new BasicBoxCollision(this.gameFactory.createCircle("dummy", { x: -20, y: 20 }, 3)))
-    this.gameFactory.addGameCollision(
-      new BasicBoxCollision(this.gameFactory.createCircle("dummy", { x: 20, y: -20 }, 3)))
+    // this.gameFactory.addGameCollision(
+    //   new BasicBoxCollision(this.gameFactory.createCircle("dummy", { x: 20, y: 20 }, 3)))
+    // this.gameFactory.addGameCollision(
+    //   new BasicBoxCollision(this.gameFactory.createCircle("dummy", { x: -20, y: -20 }, 3)))
+    // this.gameFactory.addGameCollision(
+    //   new BasicBoxCollision(this.gameFactory.createCircle("dummy", { x: -20, y: 20 }, 3)))
+    // this.gameFactory.addGameCollision(
+    //   new BasicBoxCollision(this.gameFactory.createCircle("dummy", { x: 20, y: -20 }, 3)))
+
+      this.gameFactory.addGameCollision(
+        new BasicBoxCollision(this.gameFactory.createRectangle("dummy", { x: 20, y: 20 }, 6, 6)))
+      this.gameFactory.addGameCollision(
+        new BasicBoxCollision(this.gameFactory.createRectangle("dummy", { x: -20, y: -20 }, 6, 6)))
+      this.gameFactory.addGameCollision(
+        new BasicBoxCollision(this.gameFactory.createRectangle("dummy", { x: -20, y: 20 }, 6, 6)))
+      this.gameFactory.addGameCollision(
+        new BasicBoxCollision(this.gameFactory.createRectangle("dummy", { x: 20, y: -20 }, 6, 6)))
   }
 }
