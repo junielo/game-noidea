@@ -49,29 +49,30 @@ export class AppComponent extends GameEngine implements AfterViewInit {
     Time.isViewTime = true;
     this.mainPlayer = this.gameFactory.createCircle("Player", { x: 0, y: 0 }, 2.1);
     this.mainPlayer.setBGColor('blue');
-    // this.gameFactory.addAnimControls(new PlayerMovements(this.mainPlayer));
+    
     this.gameFactory.addGameControls(new PhysicsMovement(this.mainPlayer, 30, 10, 60));
-    this.gameFactory.addGameCollision(new BasicBoxCollision(this.mainPlayer))
+    this.gameFactory.addGameControls(
+      this.gameFactory.addGameCollision(new BasicBoxCollision(this.mainPlayer))
+    )
 
     this.gameFactory.addGameControls(new CopyPositionConstraint(this.mainPlayer, this.gameFactory.camera));
     this.gameFactory.addGameControls(new DelayCopyPosition(this.gameFactory.camera, 1500));
 
-    // this.gameFactory.addGameCollision(
-    //   new BasicBoxCollision(this.gameFactory.createCircle("dummy", { x: 20, y: 20 }, 3)))
-    // this.gameFactory.addGameCollision(
-    //   new BasicBoxCollision(this.gameFactory.createCircle("dummy", { x: -20, y: -20 }, 3)))
-    // this.gameFactory.addGameCollision(
-    //   new BasicBoxCollision(this.gameFactory.createCircle("dummy", { x: -20, y: 20 }, 3)))
-    // this.gameFactory.addGameCollision(
-    //   new BasicBoxCollision(this.gameFactory.createCircle("dummy", { x: 20, y: -20 }, 3)))
-
+    this.gameFactory.addGameControls(
       this.gameFactory.addGameCollision(
-        new BasicBoxCollision(this.gameFactory.createRectangle("dummy", { x: 20, y: 20 }, 6, 6)))
+        new BasicBoxCollision(this.gameFactory.createRectangle("dummy1", { x: 20, y: 20 }, 6, 6)))
+    )
+    this.gameFactory.addGameControls(
       this.gameFactory.addGameCollision(
-        new BasicBoxCollision(this.gameFactory.createRectangle("dummy", { x: -20, y: -20 }, 6, 6)))
+        new BasicBoxCollision(this.gameFactory.createRectangle("dummy2", { x: -20, y: -20 }, 6, 6)))
+    )
+    this.gameFactory.addGameControls(
       this.gameFactory.addGameCollision(
-        new BasicBoxCollision(this.gameFactory.createRectangle("dummy", { x: -20, y: 20 }, 6, 6)))
+        new BasicBoxCollision(this.gameFactory.createRectangle("dummy3", { x: -20, y: 20 }, 6, 6)))
+    )
+    this.gameFactory.addGameControls(
       this.gameFactory.addGameCollision(
-        new BasicBoxCollision(this.gameFactory.createRectangle("dummy", { x: 20, y: -20 }, 6, 6)))
+        new BasicBoxCollision(this.gameFactory.createRectangle("dummy4", { x: 20, y: -20 }, 6, 6)))
+    )
   }
 }

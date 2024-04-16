@@ -29,8 +29,7 @@ export abstract class GameCollision implements IMainObject, IAnimateCallback, IP
         this.collisionList.forEach((collisionObject) => {
             if (this._mainObject !== collisionObject._mainObject) {
                 if (this.isCollision(this._mainObject, collisionObject._mainObject)) {
-                    this._mainObject.moveAnchor({ ...this.preAnchorPoint })
-                    this.collisionEffect(collisionObject._mainObject)
+                    this.collisionEffect(this._mainObject, collisionObject._mainObject)
                 }
             }
         })
@@ -43,7 +42,7 @@ export abstract class GameCollision implements IMainObject, IAnimateCallback, IP
     abstract isCollision(currentObject: IGameObject, collisionObject: IGameObject): boolean
 
     // *2 When collision is detected there will be an effect, a transfer of energy and a change in direction of no effect
-    abstract collisionEffect(gameObject: IGameObject): void
+    abstract collisionEffect(currentObject: IGameObject, collisionObject: IGameObject): void
 
     setCollisionList(collisionObjects: GameCollision[]) {
         this.collisionList = collisionObjects;
@@ -53,10 +52,12 @@ export abstract class GameCollision implements IMainObject, IAnimateCallback, IP
         this.gameControlList = gameControls;
     }
 
-    getGameControl(classParam: { new(...args: any[]): any }) {
+    getGameControl(classParam: { new(...args: any[]): any }, gameObject: IGameObject) {
+        console.log(this.gameControlList.length)
         return this.gameControlList.find((control) => {
             if (control instanceof classParam && '_mainObject' in control) {
-                if ((control as IMainObject).mainObject() === this._mainObject) {
+                // console.log((control as IMainObject).mainObject().tag)
+                if ((control as IMainObject).mainObject() === gameObject) {
                     return true
                 }
             }

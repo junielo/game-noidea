@@ -24,15 +24,16 @@ export class GameFactory {
         return rectangle;
     }
 
-    addGameControls(animControl: any): void {
+    addGameControls(animControl: any): any {
         this.gameControls.push(animControl);
+        return animControl;
     }
 
-    addGameCollision(gameCollision: GameCollision) {
+    addGameCollision(gameCollision: GameCollision): GameCollision {
+        this.gameCollisions.push(gameCollision)
         gameCollision.setCollisionList(this.gameCollisions)
         gameCollision.setGameControlList(this.gameControls)
-        this.gameControls.push(gameCollision)
-        this.gameCollisions.push(gameCollision)
+        return gameCollision
     }
 
 }

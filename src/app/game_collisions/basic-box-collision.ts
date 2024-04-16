@@ -4,6 +4,11 @@ import { IGameObject } from "../dimensions/game-object";
 import { IPoint } from "../dimensions/point";
 import { GameCollision } from "./collision";
 
+export type CollisionDirection = {
+    isHorizontalCollision: boolean,
+    isVerticalCollision: boolean
+}
+
 export class BasicBoxCollision extends GameCollision {
 
     constructor(player: IGameObject) {
@@ -24,11 +29,18 @@ export class BasicBoxCollision extends GameCollision {
         return isHorizontalCollision && isVerticalCollision
     }
 
-    override collisionEffect(gameObject: IGameObject): void {
-        const physicsMovement: PhysicsMovement = this.getGameControl(PhysicsMovement)
-        if(physicsMovement) {
-            physicsMovement.setVerticalForce(0)
-            physicsMovement.setHorizontalForce(0)
+    override collisionEffect(currentObject: IGameObject, collisionObject: IGameObject): void {
+        const horizontalDistance = currentObject.anchorPoint.x - collisionObject.anchorPoint.x
+        const verticalDistance = currentObject.anchorPoint.y - collisionObject.anchorPoint.y
+
+        if (Math.abs(horizontalDistance) > Math.abs(verticalDistance)) {
+            const distanceCollision = Math.min(currentObject.getBounds.right, collisionObject.getBounds.right) - Math.max(currentObject.getBounds.left, collisionObject.getBounds.left)
+            const newCurrentAnchor = currentObject.anchorPoint.x + distanceCollision * Math.sign(horizontalDistance)
+            currentObject.moveAnchor({ x: newCurrentAnchor, y: currentObject.anchorPoint.y })
+        } else if (Math.abs(horizontalDistance) < Math.abs(verticalDistance)) {
+            const distanceCollision = Math.min(currentObject.getBounds.bottom, collisionObject.getBounds.bottom) - Math.max(currentObject.getBounds.top, collisionObject.getBounds.top)
+            const newCurrentAnchor = currentObject.anchorPoint.y + distanceCollision * Math.sign(verticalDistance)
+            currentObject.moveAnchor({ x: currentObject.anchorPoint.x, y: newCurrentAnchor })
         }
     }
     

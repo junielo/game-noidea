@@ -96,4 +96,8 @@ export class PhysicsMovement implements IMainObject, IAnimateCallback, IKeydownC
         this.force_y = force
     }
 
+    getMass(): number {
+        return this.mass
+    }
+
 }
