@@ -9,6 +9,8 @@ import { DelayCopyPosition } from './animation_controller/delay-copyposition';
 import { Time } from './game_util/time-util';
 import { PhysicsMovement } from './animation_controller/physics-movement';
 import { BasicBoxCollision } from './game_collisions/basic-box-collision';
+import { PhysicsObject } from './animation_controller/physics-object';
+import { PhysicsBoxCollision } from './game_collisions/physics-box-collision';
 
 @Component({
   selector: 'app-root',
@@ -52,27 +54,38 @@ export class AppComponent extends GameEngine implements AfterViewInit {
     
     this.gameFactory.addGameControls(new PhysicsMovement(this.mainPlayer, 30, 10, 60));
     this.gameFactory.addGameControls(
-      this.gameFactory.addGameCollision(new BasicBoxCollision(this.mainPlayer))
+      this.gameFactory.addGameCollision(new PhysicsBoxCollision(this.mainPlayer))
     )
 
     this.gameFactory.addGameControls(new CopyPositionConstraint(this.mainPlayer, this.gameFactory.camera));
     this.gameFactory.addGameControls(new DelayCopyPosition(this.gameFactory.camera, 1500));
 
+    const dummy1 = this.gameFactory.createRectangle("dummy1", { x: 20, y: 20 }, 6, 6)
+    this.gameFactory.addGameControls(new PhysicsObject(dummy1, 0, 5, 30));
     this.gameFactory.addGameControls(
       this.gameFactory.addGameCollision(
-        new BasicBoxCollision(this.gameFactory.createRectangle("dummy1", { x: 20, y: 20 }, 6, 6)))
+        new PhysicsBoxCollision(dummy1))
     )
+
+    const dummy2 = this.gameFactory.createRectangle("dummy2", { x: -20, y: -20 }, 6, 6)
+    this.gameFactory.addGameControls(new PhysicsObject(dummy2, 0, 10, 60));
     this.gameFactory.addGameControls(
       this.gameFactory.addGameCollision(
-        new BasicBoxCollision(this.gameFactory.createRectangle("dummy2", { x: -20, y: -20 }, 6, 6)))
+        new PhysicsBoxCollision(dummy2))
     )
+
+    const dummy3 = this.gameFactory.createRectangle("dummy3", { x: -20, y: 20 }, 6, 6)
+    this.gameFactory.addGameControls(new PhysicsObject(dummy3, 0, 5, 30));
     this.gameFactory.addGameControls(
       this.gameFactory.addGameCollision(
-        new BasicBoxCollision(this.gameFactory.createRectangle("dummy3", { x: -20, y: 20 }, 6, 6)))
+        new PhysicsBoxCollision(dummy3))
     )
+
+    const dummy4 = this.gameFactory.createRectangle("dummy4", { x: 20, y: -20 }, 6, 6)
+    this.gameFactory.addGameControls(new PhysicsObject(dummy4, 0, 10, 60));
     this.gameFactory.addGameControls(
       this.gameFactory.addGameCollision(
-        new BasicBoxCollision(this.gameFactory.createRectangle("dummy4", { x: 20, y: -20 }, 6, 6)))
+        new PhysicsBoxCollision(dummy4))
     )
   }
 }

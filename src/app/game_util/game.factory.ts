@@ -1,6 +1,6 @@
 import { IGameObject } from "../dimensions/game-object";
 import { IPoint } from "../dimensions/point";
-import { GameCollision } from "../game_collisions/collision";
+import { GameCollision } from "../game_collisions/base-collision";
 import { Camera } from "../game_object/camera";
 import { Circle } from "../game_object/circle";
 import { Rectangle } from "../game_object/rectangle";
