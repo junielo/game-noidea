@@ -28,7 +28,7 @@ export class AppComponent extends GameEngine implements AfterViewInit {
   fpsCount = Time.fpsCount;
 
   ngAfterViewInit(): void {
-    Time.setPreviousTime(performance.now());
+    Time.setPreviousTime(Time.now());
     this.setCanvasRef(this.canvasRef);
   }
 
@@ -52,7 +52,7 @@ export class AppComponent extends GameEngine implements AfterViewInit {
     this.mainPlayer = this.gameFactory.createCircle("Player", { x: 0, y: 0 }, 2.1);
     this.mainPlayer.setBGColor('blue');
     
-    this.gameFactory.addGameControls(new PhysicsMovement(this.mainPlayer, 30, 10, 60));
+    this.gameFactory.addGameControls(new PhysicsMovement(this.mainPlayer, 30, 5, 60));
     this.gameFactory.addGameControls(
       this.gameFactory.addGameCollision(new PhysicsBoxCollision(this.mainPlayer))
     )
@@ -61,7 +61,7 @@ export class AppComponent extends GameEngine implements AfterViewInit {
     this.gameFactory.addGameControls(new DelayCopyPosition(this.gameFactory.camera, 1500));
 
     const dummy1 = this.gameFactory.createRectangle("dummy1", { x: 20, y: 20 }, 6, 6)
-    this.gameFactory.addGameControls(new PhysicsObject(dummy1, 0, 5, 30));
+    this.gameFactory.addGameControls(new PhysicsObject(dummy1, 0, 2, 30));
     this.gameFactory.addGameControls(
       this.gameFactory.addGameCollision(
         new PhysicsBoxCollision(dummy1))
@@ -75,7 +75,7 @@ export class AppComponent extends GameEngine implements AfterViewInit {
     )
 
     const dummy3 = this.gameFactory.createRectangle("dummy3", { x: -20, y: 20 }, 6, 6)
-    this.gameFactory.addGameControls(new PhysicsObject(dummy3, 0, 5, 30));
+    this.gameFactory.addGameControls(new PhysicsObject(dummy3, 0, 2, 30));
     this.gameFactory.addGameControls(
       this.gameFactory.addGameCollision(
         new PhysicsBoxCollision(dummy3))

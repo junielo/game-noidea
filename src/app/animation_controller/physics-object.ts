@@ -6,6 +6,7 @@ import { IMainObject } from "../interfaces/game-object";
 
 export class PhysicsObject implements IMainObject, IAnimateCallback {
 
+    protected speed: number =  25;
     protected force: number;
     protected force_x: number = 0;
     protected force_y: number = 0;
@@ -25,7 +26,7 @@ export class PhysicsObject implements IMainObject, IAnimateCallback {
         if (Math.abs(this.force_x) > 0) {
             this.force_x = this.computeOpposedForce(this.force_x)
             this._mainObject.moveAnchor({ 
-                x: this._mainObject.anchorPoint.x + this.computeDistance(this.force_x), 
+                x: this._mainObject.anchorPoint.x + this.computeDistance(this.force_x, (force: number) => { this.force_x = force }), 
                 y: this._mainObject.anchorPoint.y 
             })
         } 
@@ -33,7 +34,7 @@ export class PhysicsObject implements IMainObject, IAnimateCallback {
             this.force_y = this.computeOpposedForce(this.force_y)
             this._mainObject.moveAnchor({ 
                 x: this._mainObject.anchorPoint.x, 
-                y: this._mainObject.anchorPoint.y + this.computeDistance(this.force_y) 
+                y: this._mainObject.anchorPoint.y + this.computeDistance(this.force_y, (force: number) => { this.force_y = force }) 
             })
         }
     }
@@ -56,10 +57,12 @@ export class PhysicsObject implements IMainObject, IAnimateCallback {
      * @param force 
      * @returns distance traveled by the object in the time delta
      */
-    private computeDistance(force: number): number {
+    private computeDistance(force: number, fn: (force: number) => void): number {
+        const timeInterval = Time.deltaTime() / Time.millisInSecond;
         const acceleration = force / (this.mass + this.transferred_mass)
-        const distance = 0.5 * acceleration * (Math.pow(Time.deltaTime(), 2) / Time.millisInSecond)
-        this.transferred_mass = 0;
+        const distance = (0.5 * acceleration) * (Math.pow(this.speed * timeInterval, 2))
+        fn(acceleration * this.mass)
+        this.transferred_mass = 0
         return distance
     }
 

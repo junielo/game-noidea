@@ -22,7 +22,7 @@ export class Time {
     }
 
     static setCurrentTime() {
-        Time.currentTime = performance.now()
+        Time.currentTime = Time.now()
     }
 
     static setPreviousTime(time: number = Time.currentTime) {
@@ -30,7 +30,7 @@ export class Time {
     }
 
     static now() : number {
-        return performance.now()
+        return Date.now()
     }
 
 }

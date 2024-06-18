@@ -15,6 +15,7 @@ export class PhysicsBoxCollision extends GameCollision {
         const isVerticalCollision = !!Math.max(Math.min(currentObject.getBounds.bottom, collisionObject.getBounds.bottom) - Math.max(currentObject.getBounds.top, collisionObject.getBounds.top), 0)
         return isHorizontalCollision && isVerticalCollision
     }
+    
     override collisionEffect(currentObject: IGameObject, collisionObject: IGameObject): void {
         const horizontalDistance = currentObject.anchorPoint.x - collisionObject.anchorPoint.x
         const verticalDistance = currentObject.anchorPoint.y - collisionObject.anchorPoint.y

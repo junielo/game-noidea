@@ -47,3 +47,7 @@ export function isPointSame(a: IPoint, b: IPoint): boolean {
 export function getDecimal(number: number): number {
     return number - Math.floor(number);
 }
+
+export function getAbsoluteDistance(A: IPoint, B: IPoint): number {
+    return Math.sqrt(Math.pow(A.x - B.x, 2) + Math.pow(A.y - B.y, 2));
+}

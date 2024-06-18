@@ -55,7 +55,6 @@ export abstract class GameCollision implements IMainObject, IAnimateCallback, IP
     getGameControl<T>(classParam: { new(...args: any[]): any }, gameObject: IGameObject): T {
         return this.gameControlList.find((control) => {
             if (control instanceof classParam && '_mainObject' in control) {
-                // console.log((control as IMainObject).mainObject().tag)
                 if ((control as IMainObject).mainObject() === gameObject) {
                     return true
                 }
