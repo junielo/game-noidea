@@ -6,8 +6,8 @@ import { GameCollision } from "./base-collision";
 
 export class BasicBoxCollision extends GameCollision {
 
-    constructor(player: IGameObject) {
-        super(player);
+    constructor(collisionFrom: IGameObject, collisionTo: IGameObject) {
+        super(collisionFrom, collisionTo);
     }
 
     /**

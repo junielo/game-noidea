@@ -11,6 +11,8 @@ import { PhysicsMovement } from './animation_controller/physics-movement';
 import { BasicBoxCollision } from './game_collisions/basic-box-collision';
 import { PhysicsObject } from './animation_controller/physics-object';
 import { PhysicsBoxCollision } from './game_collisions/physics-box-collision';
+import { LineSegment } from './game_object/line';
+import { BasicEdgeCollision } from './game_collisions/basic-edge-collision';
 
 @Component({
   selector: 'app-root',
@@ -53,39 +55,25 @@ export class AppComponent extends GameEngine implements AfterViewInit {
     this.mainPlayer.setBGColor('blue');
     
     this.gameFactory.addGameControls(new PhysicsMovement(this.mainPlayer, 30, 5, 60));
-    this.gameFactory.addGameControls(
-      this.gameFactory.addGameCollision(new PhysicsBoxCollision(this.mainPlayer))
-    )
 
     this.gameFactory.addGameControls(new CopyPositionConstraint(this.mainPlayer, this.gameFactory.camera));
     this.gameFactory.addGameControls(new DelayCopyPosition(this.gameFactory.camera, 1500));
 
-    const dummy1 = this.gameFactory.createRectangle("dummy1", { x: 20, y: 20 }, 6, 6)
-    this.gameFactory.addGameControls(new PhysicsObject(dummy1, 0, 2, 30));
+    const lineSegment = this.gameFactory.createLineSegment("line", { x: 25, y: 25 }, { x: 50, y: -25 }, 5);
     this.gameFactory.addGameControls(
-      this.gameFactory.addGameCollision(
-        new PhysicsBoxCollision(dummy1))
+      this.gameFactory.addGameCollision(new BasicEdgeCollision(this.mainPlayer, lineSegment))
     )
+    // const angleInGreen = this.gameFactory.createLineSegment("green", this.mainPlayer.anchorPoint, lineSegment.anchorPoint, 5);
+    // angleInGreen.setBGColor('green');
 
-    const dummy2 = this.gameFactory.createRectangle("dummy2", { x: -20, y: -20 }, 6, 6)
-    this.gameFactory.addGameControls(new PhysicsObject(dummy2, 0, 10, 60));
-    this.gameFactory.addGameControls(
-      this.gameFactory.addGameCollision(
-        new PhysicsBoxCollision(dummy2))
-    )
+    // const angleInYellow = this.gameFactory.createLineSegment("yellow", this.mainPlayer.anchorPoint, (lineSegment as LineSegment).endPoint, 5);
+    // angleInYellow.setBGColor('yellow');
 
-    const dummy3 = this.gameFactory.createRectangle("dummy3", { x: -20, y: 20 }, 6, 6)
-    this.gameFactory.addGameControls(new PhysicsObject(dummy3, 0, 2, 30));
-    this.gameFactory.addGameControls(
-      this.gameFactory.addGameCollision(
-        new PhysicsBoxCollision(dummy3))
-    )
-
-    const dummy4 = this.gameFactory.createRectangle("dummy4", { x: 20, y: -20 }, 6, 6)
-    this.gameFactory.addGameControls(new PhysicsObject(dummy4, 0, 10, 60));
-    this.gameFactory.addGameControls(
-      this.gameFactory.addGameCollision(
-        new PhysicsBoxCollision(dummy4))
-    )
+    // const dummy1 = this.gameFactory.createRectangle("dummy1", { x: 20, y: 20 }, 6, 6)
+    // this.gameFactory.addGameControls(new PhysicsObject(dummy1, 0, 2, 30));
+    // this.gameFactory.addGameControls(
+    //   this.gameFactory.addGameCollision(
+    //     new PhysicsBoxCollision(dummy1))
+    // )
   }
 }

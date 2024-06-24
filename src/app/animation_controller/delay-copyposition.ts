@@ -7,7 +7,7 @@ import { IMainObject } from "../interfaces/game-object";
 
 export class DelayCopyPosition implements IMainObject, IAnimateCallback, IKeydownCallback, IKeyupCallback {
 
-    readonly _mainObject: IGameObject;
+    readonly _collisionFrom: IGameObject;
     private truePositionList: IPoint[] = [];
     private delayInMillis: number;
     private delayStarted: number = 0;
@@ -15,13 +15,13 @@ export class DelayCopyPosition implements IMainObject, IAnimateCallback, IKeydow
     private keyPress: string = '';
 
     constructor(gameObject: IGameObject, delayInMillis: number) {
-        this._mainObject = gameObject;
+        this._collisionFrom = gameObject;
         this.delayInMillis = delayInMillis;
         this.keyLastChanged = Time.now();
     }
     
     mainObject(): IGameObject {
-        return this._mainObject
+        return this._collisionFrom
     }
 
     /**
@@ -35,15 +35,15 @@ export class DelayCopyPosition implements IMainObject, IAnimateCallback, IKeydow
             if (this.delayStarted === 0){
                 if (Time.now() - this.keyLastChanged > 300) {
                     this.delayStarted = Time.now();
-                    this.truePositionList.push({...this._mainObject.anchorPoint});
+                    this.truePositionList.push({...this._collisionFrom.anchorPoint});
                 }
             }
             this.keyLastChanged = Time.now();
         }
 
         if (this.delayStarted !== 0) {
-            if(this.truePositionList.length === 0 || !isPointSame(this.truePositionList.slice(-1)[0], this._mainObject.anchorPoint))
-                this.truePositionList.push({...this._mainObject.anchorPoint});
+            if(this.truePositionList.length === 0 || !isPointSame(this.truePositionList.slice(-1)[0], this._collisionFrom.anchorPoint))
+                this.truePositionList.push({...this._collisionFrom.anchorPoint});
             const timeDelta = Time.now() - this.delayStarted;
             const computed = (timeDelta / this.delayInMillis) * this.truePositionList.length;
             const index = Math.floor(computed);
@@ -52,9 +52,9 @@ export class DelayCopyPosition implements IMainObject, IAnimateCallback, IKeydow
                     const decimalPoint = getDecimal(computed)
                     const x = this.truePositionList[index].x + (this.truePositionList[index + 1].x - this.truePositionList[index].x) * decimalPoint;
                     const y = this.truePositionList[index].y + (this.truePositionList[index + 1].y - this.truePositionList[index].y) * decimalPoint;
-                    this._mainObject.moveAnchor({x, y});
+                    this._collisionFrom.moveAnchor({x, y});
                 } else {
-                    this._mainObject.moveAnchor({...this.truePositionList[index]});
+                    this._collisionFrom.moveAnchor({...this.truePositionList[index]});
                 }
             } else {
                 this.delayStarted = 0;

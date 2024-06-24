@@ -13,10 +13,10 @@ export class PhysicsObject implements IMainObject, IAnimateCallback {
     protected mass: number;
     protected transferred_mass: number = 0;
     protected opposing_force: number;
-    readonly _mainObject: IGameObject;
+    readonly _collisionFrom: IGameObject;
 
     constructor(gameObject: IGameObject, force: number, mass: number, opposing_force: number) {
-        this._mainObject = gameObject;
+        this._collisionFrom = gameObject;
         this.force = force;
         this.mass = mass;
         this.opposing_force = opposing_force;
@@ -25,22 +25,22 @@ export class PhysicsObject implements IMainObject, IAnimateCallback {
     animate(): void {
         if (Math.abs(this.force_x) > 0) {
             this.force_x = this.computeOpposedForce(this.force_x)
-            this._mainObject.moveAnchor({ 
-                x: this._mainObject.anchorPoint.x + this.computeDistance(this.force_x, (force: number) => { this.force_x = force }), 
-                y: this._mainObject.anchorPoint.y 
+            this._collisionFrom.moveAnchor({ 
+                x: this._collisionFrom.anchorPoint.x + this.computeDistance(this.force_x, (force: number) => { this.force_x = force }), 
+                y: this._collisionFrom.anchorPoint.y 
             })
         } 
         if (Math.abs(this.force_y) > 0) {
             this.force_y = this.computeOpposedForce(this.force_y)
-            this._mainObject.moveAnchor({ 
-                x: this._mainObject.anchorPoint.x, 
-                y: this._mainObject.anchorPoint.y + this.computeDistance(this.force_y, (force: number) => { this.force_y = force }) 
+            this._collisionFrom.moveAnchor({ 
+                x: this._collisionFrom.anchorPoint.x, 
+                y: this._collisionFrom.anchorPoint.y + this.computeDistance(this.force_y, (force: number) => { this.force_y = force }) 
             })
         }
     }
 
     mainObject(): IGameObject {
-        return this._mainObject
+        return this._collisionFrom
     }
 
     /**

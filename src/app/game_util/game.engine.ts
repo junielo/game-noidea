@@ -33,13 +33,16 @@ export abstract class GameEngine {
      */
     protected scaleCanvas(): void {
         const canvas = this.canvas.nativeElement;
-        const dpr = window.devicePixelRatio || 1;
+        // const dpr = window.devicePixelRatio || 1;
 
-        canvas.width = canvas.clientWidth * dpr;
-        canvas.height = canvas.clientHeight * dpr;
+        // canvas.width = canvas.clientWidth * dpr;
+        // canvas.height = canvas.clientHeight * dpr;
+
+        canvas.width = canvas.clientWidth;
+        canvas.height = canvas.clientHeight;
 
         // Scale the drawing context
-        this.drawShape.scale(dpr, dpr);
+        // this.drawShape.scale(dpr, dpr);
 
         const windowWidth = canvas.clientWidth;
         const windowHeight = canvas.clientHeight;
@@ -93,6 +96,9 @@ export abstract class GameEngine {
         this.preAnimateCallbacks = this.gameFactory.gameControls.filter((control): control is IPreAnimateCallback => "preAnimate" in control);
         this.keydownCallbacks = this.gameFactory.gameControls.filter((control): control is IKeydownCallback => "keydown" in control);
         this.keyupCallbacks = this.gameFactory.gameControls.filter((control): control is IKeyupCallback => "keyup" in control);
+        
+        this.animateCallbacks.push(...this.gameFactory.gameCollisions.filter((control): control is IAnimateCallback => "animate" in control));
+        this.preAnimateCallbacks.push(...this.gameFactory.gameCollisions.filter((control): control is IPreAnimateCallback => "preAnimate" in control));
     }
 
 }

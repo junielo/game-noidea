@@ -6,8 +6,8 @@ import { GameCollision } from "./base-collision";
 
 export class PhysicsBoxCollision extends GameCollision {
 
-    constructor(player: IGameObject) {
-        super(player);
+    constructor(collisionFrom: IGameObject, collisionTo: IGameObject) {
+        super(collisionFrom, collisionTo);
     }
 
     override isCollision(currentObject: IGameObject, collisionObject: IGameObject): boolean {

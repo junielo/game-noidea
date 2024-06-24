@@ -1,27 +1,37 @@
 import { IBounds } from "../dimensions/boundary";
 import { IGameObject } from "../dimensions/game-object";
 import { IPoint } from "../dimensions/point";
+import { getLineAngle, worldToPixelCoordinate } from "../game_util/computations";
 
 
-class Line implements IGameObject {
+export class LineSegment implements IGameObject {
     anchorPoint: IPoint;
     tag: string;
     parent: IGameObject | null;
     bgColor: string;
 
     endPoint: IPoint;
+    width: number;
 
-    constructor(tag: string, anchorPoint: IPoint, endPoint: IPoint) {
+    constructor(tag: string, anchorPoint: IPoint, endPoint: IPoint, width: number) {
         this.tag = tag;
         this.anchorPoint = anchorPoint;
         this.parent = null;
-        this.bgColor = 'red';
+        this.bgColor = 'black';
 
         this.endPoint = endPoint;
+        this.width = width;
     }
 
     draw(canvas: CanvasRenderingContext2D): void {
-        throw new Error("Method not implemented.");
+        const newAnchor = worldToPixelCoordinate(canvas, this.anchorPoint);
+        const newEnd = worldToPixelCoordinate(canvas, this.endPoint);
+        canvas.beginPath();
+        canvas.moveTo(newAnchor.x, newAnchor.y);
+        canvas.lineTo(newEnd.x, newEnd.y);
+        canvas.lineWidth = this.width;
+        canvas.strokeStyle = this.bgColor;
+        canvas.stroke();
     }
 
     setBGColor(color: string): this {
@@ -29,12 +39,17 @@ class Line implements IGameObject {
         return this;
     }
 
-    moveAnchor(point: IPoint): void {
-        throw new Error("Method not implemented.");
+    get getBounds(): IBounds {
+        return {
+            top: Math.min(this.anchorPoint.y, this.endPoint.y),
+            bottom: Math.max(this.anchorPoint.y, this.endPoint.y),
+            left: Math.min(this.anchorPoint.x, this.endPoint.x),
+            right: Math.max(this.anchorPoint.x, this.endPoint.x)
+        }
     }
 
-    get getBounds(): IBounds {
-        throw new Error("Method not implemented.");
+    moveAnchor(point: IPoint): void {
+        // no implementation needed
     }
 
 }

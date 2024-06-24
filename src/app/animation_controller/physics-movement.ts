@@ -12,7 +12,7 @@ export class PhysicsMovement extends PhysicsObject implements IPreAnimateCallbac
 
     constructor(gameObject: IGameObject, force: number, mass: number, opposing_force: number) {
         super(gameObject, force, mass, opposing_force);
-        this.preAnchorPoint = this._mainObject.anchorPoint
+        this.preAnchorPoint = this._collisionFrom.anchorPoint
     }
 
     preAnimate(): void {
