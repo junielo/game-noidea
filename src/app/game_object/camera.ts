@@ -12,7 +12,6 @@ export class Camera implements IGameObject {
     defaultWidth: number = 100;
     defaultHeight: number = 100;
     tag: string = "camera";
-    parent: IGameObject | null;
     bgColor: string = 'red'
 
     constructor(point: IPoint) {
@@ -23,7 +22,6 @@ export class Camera implements IGameObject {
             left: this.anchorPoint.x - this.defaultWidth / 2,
             right: this.anchorPoint.x + this.defaultWidth / 2
         });
-        this.parent = null;
     }
 
     get getBounds(): IBounds {

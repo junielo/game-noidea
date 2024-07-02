@@ -7,7 +7,6 @@ import { getLineAngle, worldToPixelCoordinate } from "../game_util/computations"
 export class LineSegment implements IGameObject {
     anchorPoint: IPoint;
     tag: string;
-    parent: IGameObject | null;
     bgColor: string;
 
     endPoint: IPoint;
@@ -16,7 +15,6 @@ export class LineSegment implements IGameObject {
     constructor(tag: string, anchorPoint: IPoint, endPoint: IPoint, width: number) {
         this.tag = tag;
         this.anchorPoint = anchorPoint;
-        this.parent = null;
         this.bgColor = 'black';
 
         this.endPoint = endPoint;

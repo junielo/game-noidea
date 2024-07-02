@@ -2,6 +2,6 @@ import { IPoint } from "./point";
 
 
 export interface ILine {
-    poinA: IPoint;
+    pointA: IPoint;
     pointB: IPoint;
 }

@@ -5,7 +5,6 @@ import { worldToPixelCoordinate, worldToPixelWidth as worldToPixelWidthHeight } 
 
 export class Rectangle implements IGameObject {
     tag: string;
-    parent: IGameObject | null;
     bgColor: string = 'red'
 
     anchorPoint: IPoint;
@@ -18,7 +17,6 @@ export class Rectangle implements IGameObject {
         this.height = height;
 
         this.tag = tag;
-        this.parent = null;
     }
 
     get getBounds(): IBounds {

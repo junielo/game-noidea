@@ -6,7 +6,6 @@ import { worldToPixelCoordinate } from "../game_util/computations";
 export class Circle implements IGameObject{
 
     tag: string;
-    parent: IGameObject | null;
     bgColor: string = 'green'
 
     anchorPoint: IPoint;
@@ -22,7 +21,6 @@ export class Circle implements IGameObject{
         this.radius = radius;
 
         this.tag = tag;
-        this.parent = null;
     }
 
     get getBounds(): IBounds {

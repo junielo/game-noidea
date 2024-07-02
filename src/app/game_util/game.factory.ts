@@ -5,6 +5,8 @@ import { Camera } from "../game_object/camera";
 import { Circle } from "../game_object/circle";
 import { Rectangle } from "../game_object/rectangle";
 import { LineSegment } from "../game_object/line";
+import { ILine } from "../dimensions/line";
+import { Polygon } from "../game_object/polygon";
 
 export class GameFactory {
 
@@ -29,6 +31,12 @@ export class GameFactory {
         const line = new LineSegment(tag, anchorPoint, endPoint, width)
         this.gameObjects.push(line);
         return line;
+    }
+
+    createPolygon(tag: string, vertices: IPoint[]): IGameObject {
+        const polygon = new Polygon(tag, vertices);
+        this.gameObjects.push(polygon);
+        return polygon;
     }
 
     addGameControls(animControl: any): any {

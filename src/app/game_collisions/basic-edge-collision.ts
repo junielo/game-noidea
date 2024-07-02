@@ -33,9 +33,9 @@ export class BasicEdgeCollision extends GameCollision {
         const testIntersectA = getRotatedPointFromOrigin(currentObject.anchorPoint, rayAngle1, currentObject.radius);
         const testIntersectB = getRotatedPointFromOrigin(currentObject.anchorPoint, rayAngle2, currentObject.radius);
 
-        const lineA: ILine = { poinA: currentObject.anchorPoint, pointB: testIntersectA }
-        const lineB: ILine = { poinA: currentObject.anchorPoint, pointB: testIntersectB }
-        const lineIntersect: ILine = { poinA: collisionObject.anchorPoint, pointB: collisionObject.endPoint }
+        const lineA: ILine = { pointA: currentObject.anchorPoint, pointB: testIntersectA }
+        const lineB: ILine = { pointA: currentObject.anchorPoint, pointB: testIntersectB }
+        const lineIntersect: ILine = { pointA: collisionObject.anchorPoint, pointB: collisionObject.endPoint }
         
         if (isIntersect(lineA, lineIntersect)) {
             currentObject.bgColor = 'red';

@@ -51,6 +51,13 @@ export class AppComponent extends GameEngine implements AfterViewInit {
 
   override setupScene() {
     Time.isViewTime = true;
+    
+    const polygon = this.gameFactory.createPolygon("polygon", [
+      { x: 25, y: 25 },
+      { x: 37.5, y: 0 },
+      { x: 50, y: 25 },
+    ]);
+    
     this.mainPlayer = this.gameFactory.createCircle("Player", { x: 0, y: 0 }, 2.1);
     this.mainPlayer.setBGColor('blue');
     
@@ -59,21 +66,9 @@ export class AppComponent extends GameEngine implements AfterViewInit {
     this.gameFactory.addGameControls(new CopyPositionConstraint(this.mainPlayer, this.gameFactory.camera));
     this.gameFactory.addGameControls(new DelayCopyPosition(this.gameFactory.camera, 1500));
 
-    const lineSegment = this.gameFactory.createLineSegment("line", { x: 25, y: 25 }, { x: 50, y: -25 }, 5);
-    this.gameFactory.addGameControls(
-      this.gameFactory.addGameCollision(new BasicEdgeCollision(this.mainPlayer, lineSegment))
-    )
-    // const angleInGreen = this.gameFactory.createLineSegment("green", this.mainPlayer.anchorPoint, lineSegment.anchorPoint, 5);
-    // angleInGreen.setBGColor('green');
-
-    // const angleInYellow = this.gameFactory.createLineSegment("yellow", this.mainPlayer.anchorPoint, (lineSegment as LineSegment).endPoint, 5);
-    // angleInYellow.setBGColor('yellow');
-
-    // const dummy1 = this.gameFactory.createRectangle("dummy1", { x: 20, y: 20 }, 6, 6)
-    // this.gameFactory.addGameControls(new PhysicsObject(dummy1, 0, 2, 30));
+    // const lineSegment = this.gameFactory.createLineSegment("line", { x: 25, y: 25 }, { x: 50, y: -25 }, 5);
     // this.gameFactory.addGameControls(
-    //   this.gameFactory.addGameCollision(
-    //     new PhysicsBoxCollision(dummy1))
+    //   this.gameFactory.addGameCollision(new BasicEdgeCollision(this.mainPlayer, lineSegment))
     // )
   }
 }

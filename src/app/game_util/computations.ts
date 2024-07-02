@@ -97,12 +97,12 @@ export function getRotatedPointFromOrigin(point: IPoint, angleInDegrees: number,
 // These following functions is for getting the intersection point of two lines
 export function isIntersect(lineA: ILine, lineB: ILine): boolean {
     // Find the four orientations needed for the general and special cases
-    const x1 = lineA.poinA.x;
-    const y1 = lineA.poinA.y;
+    const x1 = lineA.pointA.x;
+    const y1 = lineA.pointA.y;
     const x2 = lineA.pointB.x;
     const y2 = lineA.pointB.y;
-    const x3 = lineB.poinA.x;
-    const y3 = lineB.poinA.y;
+    const x3 = lineB.pointA.x;
+    const y3 = lineB.pointA.y;
     const x4 = lineB.pointB.x;
     const y4 = lineB.pointB.y;
 
