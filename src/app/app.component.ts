@@ -13,6 +13,7 @@ import { PhysicsObject } from './animation_controller/physics-object';
 import { PhysicsBoxCollision } from './game_collisions/physics-box-collision';
 import { LineSegment } from './game_object/line';
 import { BasicEdgeCollision } from './game_collisions/basic-edge-collision';
+import { BasicCircleCollision } from './game_collisions/basic-circle-collision';
 
 @Component({
   selector: 'app-root',
@@ -52,19 +53,22 @@ export class AppComponent extends GameEngine implements AfterViewInit {
   override setupScene() {
     Time.isViewTime = true;
     
-    const polygon = this.gameFactory.createPolygon("polygon", [
-      { x: 25, y: 25 },
-      { x: 37.5, y: 0 },
-      { x: 50, y: 25 },
-    ]);
+    // const polygon = this.gameFactory.createPolygon("polygon", [
+    //   { x: 25, y: 25 },
+    //   { x: 37.5, y: 0 },
+    //   { x: 50, y: 25 },
+    // ]);
     
     this.mainPlayer = this.gameFactory.createCircle("Player", { x: 0, y: 0 }, 2.1);
     this.mainPlayer.setBGColor('blue');
-    
     this.gameFactory.addGameControls(new PhysicsMovement(this.mainPlayer, 30, 5, 60));
+    
+    let game_object1 = this.gameFactory.createCircle("Player", { x: 20, y: 0 }, 2.1);
+    game_object1.setBGColor('black');
+    this.gameFactory.addGameCollision(new BasicCircleCollision(this.mainPlayer, game_object1));
 
-    this.gameFactory.addGameControls(new CopyPositionConstraint(this.mainPlayer, this.gameFactory.camera));
-    this.gameFactory.addGameControls(new DelayCopyPosition(this.gameFactory.camera, 1500));
+    // this.gameFactory.addGameControls(new CopyPositiodnConstraint(this.mainPlayer, this.gameFactory.camera));
+    // this.gameFactory.addGameControls(new DelayCopyPosition(this.gameFactory.camera, 1500));
 
     // const lineSegment = this.gameFactory.createLineSegment("line", { x: 25, y: 25 }, { x: 50, y: -25 }, 5);
     // this.gameFactory.addGameControls(
